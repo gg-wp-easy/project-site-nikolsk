@@ -1,0 +1,53 @@
+{
+  "hero": {
+    "title": "Creating the future",
+    "titleHighlight": "from glass",
+    "description": "Production of premium architectural and decorative glass for modern projects",
+    "products": "Our products",
+    "contact": "Contact us"
+  },
+  "stats": {
+    "years": "Years on market",
+    "projects": "Projects",
+    "quality": "Quality",
+    "employees": "Employees"
+  },
+  "features": {
+    "title": "Why choose us",
+    "subtitle": "We offer the best solutions for your projects",
+    "quality": {
+      "title": "High Quality",
+      "description": "Compliance with international ISO 9001 standards"
+    },
+    "innovation": {
+      "title": "Innovation",
+      "description": "Modern glass production technologies"
+    },
+    "team": {
+      "title": "Experienced Team",
+      "description": "Qualified specialists with years of experience"
+    },
+    "reliability": {
+      "title": "Reliability",
+      "description": "Quality guarantee for all products"
+    }
+  },
+  "products": {
+    "title": "Our Products",
+    "subtitle": "Wide range of glass products",
+    "architectural": "Architectural Glass",
+    "tempered": "Tempered Glass",
+    "decorative": "Decorative Glass",
+    "details": "Learn more",
+    "viewAll": "View all products"
+  },
+  "cta": {
+    "title": "Ready to start your project?",
+    "description": "Contact us for consultation and cost calculation",
+    "button": "Get consultation"
+  },
+  "language": {
+    "ru": "Russian",
+    "en": "English"
+  }
+}
