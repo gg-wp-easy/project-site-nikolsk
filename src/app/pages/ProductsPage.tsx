@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { CheckCircle, Shield, Sparkles, Layers, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router";
 
 // Простые типы
 interface Product {
@@ -80,7 +81,7 @@ export const ProductsPage: React.FC = () => {
           try {
             const response = await fetch(imagePath, { method: 'HEAD' });
             if (response.ok) {
-              console.log(`✅ Найдено: image_${i}.${ext}`);
+              //console.log(`✅ Найдено: image_${i}.${ext}`);
               
               loadedProducts.push({
                 id: i,
@@ -294,13 +295,17 @@ export const ProductsPage: React.FC = () => {
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               {t('cta.description')}
             </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-10 py-4 bg-white text-blue-600 rounded-lg text-lg font-semibold shadow-xl"
-            >
-              {t('cta.button')}
-            </motion.button>
+            <Link to="/contact">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-10 py-4 bg-white text-blue-600 rounded-lg text-lg font-semibold shadow-xl"
+              >
+                
+              
+                {t('cta.button')}
+              </motion.button>
+            </Link>
           </motion.div>
         </div>
       </section>

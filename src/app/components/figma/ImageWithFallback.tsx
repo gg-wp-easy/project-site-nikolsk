@@ -28,7 +28,7 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
     if (onError) {
       try { onError(e as any); } catch {} // не останавливать
     }
-    console.log(`🖼️ Error loading: ${currentSrc}, retry ${retryCount}`);
+    //console.log(`🖼️ Error loading: ${currentSrc}, retry ${retryCount}`);
 
     // первый раз попробуем альтернативные расширения
     if (retryCount === 0 && src) {

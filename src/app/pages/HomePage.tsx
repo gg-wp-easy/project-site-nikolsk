@@ -227,8 +227,10 @@ export function HomePage() {
                       whileHover={{ opacity: 1, x: 0 }}
                       className="flex items-center gap-2 text-white"
                     >
-                      <span>{t('products.details')}</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <Link to="/products">
+                        <span>{t('products.details')}</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
                     </motion.div>
                   </div>
                 </div>

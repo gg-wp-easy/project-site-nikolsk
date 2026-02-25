@@ -3,53 +3,31 @@ import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-const contactInfo = [
-  {
-    icon: MapPin,
-    title: "Адрес",
-    details: ["г. Москва", "ул. Промышленная, 45", "127018"],
-  },
-  {
-    icon: Phone,
-    title: "Телефон",
-    details: ["+7 (495) 123-45-67", "+7 (495) 123-45-68", "Бесплатно по России"],
-  },
-  {
-    icon: Mail,
-    title: "Email",
-    details: ["info@glasstech.ru", "sales@glasstech.ru", "support@glasstech.ru"],
-  },
-  {
-    icon: Clock,
-    title: "Часы работы",
-    details: ["Пн-Пт: 9:00 - 18:00", "Сб: 10:00 - 15:00", "Вс: выходной"],
-  },
-];
 
 export function ContactPage() {
   const { t } = useTranslation();
 
   const contactInfo = [
-    {
+    /*{
       icon: MapPin,
       title: t('contact.cards.address'),
-      details: t('contact.details.address', { returnObjects: true }),
-    },
+      details: t('contact.details.address', { returnObjects: true }) as string[],
+    },*/
     {
       icon: Phone,
       title: t('contact.cards.phone'),
-      details: t('contact.details.phone', { returnObjects: true }),
+      details: t('contact.details.phone', { returnObjects: true }) as string[],
     },
     {
       icon: Mail,
       title: t('contact.cards.email'),
       details: ["info@glasstech.ru", "sales@glasstech.ru", "support@glasstech.ru"],
     },
-    {
+    /*{
       icon: Clock,
       title: t('contact.cards.hours'),
-      details: t('contact.details.hours', { returnObjects: true }),
-    },
+      details: t('contact.details.hours', { returnObjects: true }) as string[],
+    },*/
   ];
 
   const [formData, setFormData] = useState({
@@ -63,26 +41,30 @@ export function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  const faqListRaw = t('faq', { returnObjects: true });
+  const faqList = Array.isArray(faqListRaw) ? faqListRaw : [];
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        message: "",
-      });
+    const { name, email, phone, company, message } = formData;
 
-      setTimeout(() => {
-        setSubmitted(false);
-      }, 5000);
-    }, 1500);
+    // prepare mailto link
+    const subject = encodeURIComponent(t('contact.form.submit'));
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCompany: ${company}\nMessage:\n${message}`
+    );
+    window.location.href = `mailto:kaevnikita@yandex.ru?subject=${subject}&body=${body}`;
+
+    // still show thank you banner
+    setIsSubmitting(false);
+    setSubmitted(true);
+    setFormData({ name: "", email: "", phone: "", company: "", message: "" });
+
+    setTimeout(() => {
+      setSubmitted(false);
+    }, 5000);
   };
 
   const handleChange = (
@@ -234,7 +216,7 @@ export function ContactPage() {
                   </div>
                 </div>
 
-                <div>
+                {/*<div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     {t('contact.form.fields.company')}
                   </label>
@@ -246,7 +228,7 @@ export function ContactPage() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                     placeholder={t('contact.form.placeholders.company')}
                   />
-                </div>
+                </div>*/}
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -301,12 +283,11 @@ export function ContactPage() {
               transition={{ duration: 0.6 }}
               className="space-y-8"
             >
-              <div>
+              {/*<div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">
                   {t('contact.map.title')}
                 </h2>
 
-                {/* Map Placeholder */}
                 <div className="relative h-96 bg-gray-200 rounded-xl overflow-hidden shadow-lg">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
@@ -327,10 +308,10 @@ export function ContactPage() {
                     }}
                   />
                 </div>
-              </div>
+              </div>*/}
 
               {/* Additional Info */}
-              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-xl">
+              {/*<div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-xl">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
                   {t('contact.urgent.title')}
                 </h3>
@@ -346,7 +327,7 @@ export function ContactPage() {
                   <Phone className="w-5 h-5" />
                   {t('contact.urgent.phone')}
                 </motion.a>
-              </div>
+              </div>*/}
             </motion.div>
           </div>
         </div>
@@ -370,7 +351,7 @@ export function ContactPage() {
           </motion.div>
 
           <div className="space-y-4">
-            {t('contact.faq', { returnObjects: true }).map((faq: any, index: number) => (
+            {faqList.map((faq: any, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}

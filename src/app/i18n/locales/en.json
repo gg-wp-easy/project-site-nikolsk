@@ -178,7 +178,9 @@
       },
       "sending": "Sending...",
       "submit": "Send message"
-    }
+    },
+    "faqTitle": "Frequently Asked Questions",
+    "faqSubtitle": "Answers to common questions"
   },
   "map": {
     "title": "Where to find us",
