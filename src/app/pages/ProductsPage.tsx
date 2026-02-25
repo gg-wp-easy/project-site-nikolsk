@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { CheckCircle, Shield, Sparkles, Layers, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -21,11 +21,21 @@ interface Advantage {
 
 // advantages array will be generated inside component to allow translation
 
-export const ProductsPage: React.FC = () => {
+export const ProductsPage = (): JSX.Element => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [loadingPage, setLoadingPage] = useState<boolean>(false);
+
+  const PAGE_SIZE = 6;
+
+  const cacheRef = useRef<Record<number, Product[]>>({});
+  const lastIndexRef = useRef<number>(1);
+  const doneRef = useRef<boolean>(false);
+  const nextPageRef = useRef<number>(1);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
   const [modalSrc, setModalSrc] = useState<string | null>(null);
-  const [modalLoading, setModalLoading] = useState(false);
+  const [modalLoading, setModalLoading] = useState<boolean>(false);
 
   const { t } = useTranslation();
 
@@ -65,38 +75,51 @@ export const ProductsPage: React.FC = () => {
   ];
 
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      console.log('📸 Загрузка изображений...');
-      const loadedProducts: Product[] = [];
-      
-      for (let i = 1; i <= 90; i++) {
-        // Пробуем разные расширения
-        const extensions = ['jpg', 'JPG', 'jpeg', 'png'];
-        let found = false;
-        
-        for (const ext of extensions) {
-          const imagePath = `/images/image_${i}.${ext}`;
-          
-          try {
-            const response = await fetch(imagePath, { method: 'HEAD' });
-            if (response.ok) {
-              //console.log(`✅ Найдено: image_${i}.${ext}`);
-              
-              loadedProducts.push({
-                id: i,
-                title: t('products.dummyTitle', { id: i }),
-                image: imagePath,
-              });
-              found = true;
-              break;
-            }
-          } catch {
-            // игнор
+  // utilities for caching and incremental loading
+  const persistCache = () => {
+    try {
+      sessionStorage.setItem(
+        'productsCache',
+        JSON.stringify({
+          cache: cacheRef.current,
+          lastIndex: lastIndexRef.current,
+          done: doneRef.current,
+        })
+      );
+    } catch {}
+  };
+
+  const loadPage = async (page: number): Promise<Product[]> => {
+    if (cacheRef.current[page]) {
+      return cacheRef.current[page];
+    }
+    setLoadingPage(true);
+    const loaded: Product[] = [];
+    const extensions = ['jpg', 'JPG', 'jpeg', 'png'];
+    while (loaded.length < PAGE_SIZE && !doneRef.current) {
+      const i = lastIndexRef.current;
+      if (i > 90) {
+        doneRef.current = true;
+        break;
+      }
+      let found = false;
+      for (const ext of extensions) {
+        const imagePath = `/images/image_${i}.${ext}`;
+        try {
+          const response = await fetch(imagePath, { method: 'HEAD' });
+          if (response.ok) {
+            found = true;
+            loaded.push({
+              id: i,
+              title: t('products.dummyTitle', { id: i }),
+              image: imagePath,
+            });
+            break;
           }
-        }
-        
-        if (!found && i > 3) {
+        } catch {}
+      }
+      if (!found) {
+        if (i > 3) {
           let misses = 0;
           for (let j = i - 3; j < i; j++) {
             let found_j = false;
@@ -112,18 +135,71 @@ export const ProductsPage: React.FC = () => {
             if (!found_j) misses++;
           }
           if (misses >= 3) {
-            console.log(`🛑 Остановка после ${i - 1} изображений`);
+            doneRef.current = true;
+            persistCache();
             break;
           }
         }
       }
-      
-      //console.log(`📊 Всего загружено: ${loadedProducts.length} товаров`);
-      setProducts(loadedProducts);
-      setLoading(false);
+      lastIndexRef.current++;
+    }
+    cacheRef.current[page] = loaded;
+    persistCache();
+    setLoadingPage(false);
+    return loaded;
+  };
+
+  const loadNextPage = async () => {
+    if (loadingPage || doneRef.current) return;
+    const page = nextPageRef.current;
+    const newItems = await loadPage(page);
+    if (newItems.length > 0) {
+      setProducts((prev) => [...prev, ...newItems]);
+      nextPageRef.current++;
+    }
+  };
+
+  // intersection observer for infinite scroll
+  useEffect(() => {
+    if (doneRef.current) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadNextPage();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    const el = sentinelRef.current;
+    if (el) obs.observe(el);
+    return () => {
+      if (el) obs.unobserve(el);
     };
-    
-    loadProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // initial page load + restore cache
+  useEffect(() => {
+    const saved = sessionStorage.getItem('productsCache');
+    if (saved) {
+      try {
+        const obj = JSON.parse(saved);
+        cacheRef.current = obj.cache || {};
+        lastIndexRef.current = obj.lastIndex || 1;
+        doneRef.current = obj.done || false;
+        const pages = Object.keys(cacheRef.current)
+          .map(Number)
+          .sort((a, b) => a - b);
+        const all: Product[] = [];
+        for (const p of pages) {
+          all.push(...(cacheRef.current[p] || []));
+        }
+        setProducts(all);
+        nextPageRef.current = pages.length + 1;
+      } catch {}
+    }
+    loadNextPage().then(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
@@ -187,7 +263,6 @@ export const ProductsPage: React.FC = () => {
                   </p>
                   <button
                     onClick={() => {
-                      console.log('open modal', product.image);
                       setModalSrc(product.image);
                       setModalLoading(true);
                     }}
@@ -198,10 +273,35 @@ export const ProductsPage: React.FC = () => {
                 </div>
               </motion.div>
             ))}
+
+            {/* skeleton cards while loading more */}
+            {loadingPage && products.length > 0 &&
+              Array.from({ length: PAGE_SIZE }).map((_, i) => (
+                <div
+                  key={`skeleton-${i}`}
+                  className="bg-white rounded-xl overflow-hidden shadow-lg"
+                >
+                  <div className="relative h-64 bg-gray-200 animate-pulse" />
+                  <div className="p-6 space-y-4">
+                    <div className="h-6 bg-gray-200 w-3/4 animate-pulse" />
+                    <div className="h-4 bg-gray-200 w-full animate-pulse" />
+                    <div className="h-10 bg-gray-200 w-full animate-pulse" />
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </section>
 
+      {/* infinite scroll sentinel */}
+      <div ref={sentinelRef} className="h-1" />
+
+      {/* no more items indicator */}
+      {doneRef.current && !loadingPage && (
+        <p className="text-center text-gray-500 py-4">
+          {t('products.noMore') || 'No more products'}
+        </p>
+      )}
 
       {/* modal overlay */}
       {modalSrc && (
