@@ -1,8 +1,11 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
 import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -11,12 +14,12 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">G</span>
+                <span className="text-white font-bold text-xl"></span>
               </div>
-              <span className="font-bold text-white">GlassTech</span>
+              <span className="font-bold text-white">{t('footer.boldTitle')}</span>
             </div>
             <p className="text-sm mb-4">
-              Производство высококачественного стекла для современной архитектуры и интерьеров.
+              {t('footer.description')}
             </p>
             <div className="flex gap-4">
               <motion.a
@@ -45,13 +48,12 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Навигация</h3>
+            <h3 className="text-white font-semibold mb-4">{t('footer.navigationLabel')}</h3>
             <ul className="space-y-2">
               {[
-                { path: "/", label: "Главная" },
-                { path: "/products", label: "Продукция" },
-                { path: "/about", label: "О компании" },
-                { path: "/contact", label: "Контакты" },
+                { path: "/", label: t('links.home') },
+                { path: "/products", label: t('links.products') },
+                { path: "/contact", label: t('links.contact') },
               ].map((item) => (
                 <li key={item.path}>
                   <Link to={item.path}>
@@ -69,22 +71,21 @@ export function Footer() {
 
           {/* Products */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Продукция</h3>
+            <h3 className="text-white font-semibold mb-4">{t('links.products')}</h3>
             <ul className="space-y-2 text-sm">
-              <li className="hover:text-blue-400 transition-colors cursor-pointer">Архитектурное стекло</li>
-              <li className="hover:text-blue-400 transition-colors cursor-pointer">Закаленное стекло</li>
-              <li className="hover:text-blue-400 transition-colors cursor-pointer">Декоративное стекло</li>
-              <li className="hover:text-blue-400 transition-colors cursor-pointer">Стеклопакеты</li>
+              <li className="hover:text-blue-400 transition-colors cursor-pointer">{t('classProducts.colbs')}</li>
+              <li className="hover:text-blue-400 transition-colors cursor-pointer">{t('classProducts.glassDecorate')}</li>
+              <li className="hover:text-blue-400 transition-colors cursor-pointer">{t('classProducts.different')}</li>
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Контакты</h3>
+            <h3 className="text-white font-semibold mb-4">{t('links.contact')}</h3>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-1 text-blue-400" />
-                <span>г. Москва, ул. Промышленная, 45</span>
+                <span></span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-blue-400" />
@@ -99,7 +100,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
-          <p>&copy; 2026 GlassTech. Все права защищены.</p>
+          <p>&copy; 2026. Все права защищены.</p>
         </div>
       </div>
     </footer>

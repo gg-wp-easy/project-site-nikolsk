@@ -1,62 +1,27 @@
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { CheckCircle, Shield, Sparkles, Layers } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-const categories = ["Все", "Архитектурное", "Закаленное", "Декоративное", "Энергосберегающее"];
+// Простые типы
+interface Product {
+  id: number;
+  title: string;
+  category: string;
+  image: string;
+}
 
-const products = [
-  {
-    id: 1,
-    title: "Архитектурное стекло",
-    category: "Архитектурное",
-    description: "Высококачественное флоат-стекло для фасадов зданий",
-    image: "https://images.unsplash.com/photo-1718066236074-13f8cf7ae93e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBnbGFzcyUyMGFyY2hpdGVjdHVyZSUyMGJ1aWxkaW5nfGVufDF8fHx8MTc3MTgzMjUyNXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    features: ["Толщина: 4-19 мм", "Большие размеры", "Высокая прозрачность"],
-  },
-  {
-    id: 2,
-    title: "Закаленное стекло",
-    category: "Закаленное",
-    description: "Безопасное стекло с повышенной прочностью",
-    image: "https://images.unsplash.com/photo-1648583169325-baad54257903?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZW1wZXJlZCUyMHNhZmV0eSUyMGdsYXNzJTIwd2luZG93c3xlbnwxfHx8fDE3NzE5MDg2Njd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    features: ["Прочность в 5-7 раз выше", "Термостойкость", "Безопасное разрушение"],
-  },
-  {
-    id: 3,
-    title: "Декоративное стекло",
-    category: "Декоративное",
-    description: "Эксклюзивные дизайнерские решения для интерьеров",
-    image: "https://images.unsplash.com/photo-1738328972285-6fbe1a8b3670?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZWNvcmF0aXZlJTIwZ2xhc3MlMjBwYW5lbHMlMjBpbnRlcmlvcnxlbnwxfHx8fDE3NzE5MDg2Njd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    features: ["Различные текстуры", "Цветное стекло", "Индивидуальный дизайн"],
-  },
-  {
-    id: 4,
-    title: "Стеклянные двери",
-    category: "Архитектурное",
-    description: "Современные решения для входных групп",
-    image: "https://images.unsplash.com/photo-1768720407005-969ca95b5546?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBnbGFzcyUyMGRvb3JzJTIwZW50cmFuY2V8ZW58MXx8fHwxNzcxOTA4NjY4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    features: ["Автоматические системы", "Повышенная прочность", "Элегантный дизайн"],
-  },
-  {
-    id: 5,
-    title: "Энергосберегающее стекло",
-    category: "Энергосберегающее",
-    description: "Low-E стекло для снижения теплопотерь",
-    image: "https://images.unsplash.com/photo-1610896813398-6e965b3cc1b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnbGFzcyUyMG1hbnVmYWN0dXJpbmclMjBmYWN0b3J5fGVufDF8fHx8MTc3MTkwODY2Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    features: ["Снижение теплопотерь до 70%", "UV-защита", "Комфортный климат"],
-  },
-  {
-    id: 6,
-    title: "Многослойное стекло",
-    category: "Закаленное",
-    description: "Триплекс для максимальной безопасности",
-    image: "https://images.unsplash.com/photo-1575305842946-0e807ce6f3fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnbGFzcyUyMGN1dHRpbmclMjBwcmVjaXNpb24lMjB3b3JrfGVufDF8fHx8MTc3MTkwODY2N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    features: ["Многослойная структура", "Защита от взлома", "Шумоизоляция"],
-  },
-];
+interface Advantage {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}
 
-const advantages = [
+// Константа для заглушки
+const FALLBACK_IMAGE = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%25\' height=\'100%25\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'system-ui\' font-size=\'14\'%3EИзображение не загружено%3C/text%3E%3C/svg%3E';
+
+const advantages: Advantage[] = [
   {
     icon: Shield,
     title: "Безопасность",
@@ -79,13 +44,99 @@ const advantages = [
   },
 ];
 
-export function ProductsPage() {
-  const [activeCategory, setActiveCategory] = useState("Все");
+export const ProductsPage: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
-  const filteredProducts =
-    activeCategory === "Все"
-      ? products
-      : products.filter((p) => p.category === activeCategory);
+  const categories = [
+    t('classProducts.all'),
+    t('classProducts.colbs'),
+    t('classProducts.glassDecorate'),
+    t('classProducts.different')
+  ];
+
+  // Просто загружаем изображения 1-50
+  useEffect(() => {
+    const loadProducts = async () => {
+      console.log('📸 Загрузка изображений...');
+      const loadedProducts: Product[] = [];
+      
+      // Пробуем загрузить до 50 изображений
+      for (let i = 1; i <= 50; i++) {
+        // Пробуем разные расширения
+        const extensions = ['jpg', 'JPG', 'jpeg', 'png'];
+        let found = false;
+        
+        for (const ext of extensions) {
+          const imagePath = `/images/image_${i}.${ext}`;
+          
+          try {
+            const response = await fetch(imagePath, { method: 'HEAD' });
+            if (response.ok) {
+              console.log(`✅ Найдено: image_${i}.${ext}`);
+              
+              // Определяем категорию
+              const categoryIndex = (i - 1) % 3;
+              const category = categoryIndex === 0 ? categories[1] : 
+                              categoryIndex === 1 ? categories[2] : 
+                              categories[3];
+              
+              loadedProducts.push({
+                id: i,
+                title: `Продукт ${i}`,
+                category: category,
+                image: imagePath
+              });
+              found = true;
+              break;
+            }
+          } catch {
+            // Игнорируем ошибки
+          }
+        }
+        
+        // Если 3 раза подряд не нашли, прекращаем поиск
+        if (!found && i > 3) {
+          let misses = 0;
+          for (let j = i - 3; j < i; j++) {
+            let found_j = false;
+            for (const ext of extensions) {
+              try {
+                const resp = await fetch(`/images/image_${j}.${ext}`, { method: 'HEAD' });
+                if (resp.ok) {
+                  found_j = true;
+                  break;
+                }
+              } catch {}
+            }
+            if (!found_j) misses++;
+          }
+          if (misses >= 3) {
+            console.log(`🛑 Остановка после ${i-1} изображений`);
+            break;
+          }
+        }
+      }
+      
+      console.log(`📊 Всего загружено: ${loadedProducts.length} товаров`);
+      setProducts(loadedProducts);
+      setLoading(false);
+    };
+    
+    loadProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Загрузка товаров...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -101,17 +152,11 @@ export function ProductsPage() {
             transition={{ duration: 0.6 }}
             className="text-5xl md:text-6xl font-bold text-white mb-6"
           >
-            Наша продукция
+            {t('products.title')}
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-gray-200 max-w-3xl mx-auto"
-          >
-            Полный спектр стекольной продукции для любых архитектурных и дизайнерских
-            решений
-          </motion.p>
+          <p className="text-lg text-blue-100">
+            Всего товаров: {products.length}
+          </p>
         </div>
       </section>
 
@@ -120,19 +165,12 @@ export function ProductsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-3 justify-center">
             {categories.map((category) => (
-              <motion.button
+              <button
                 key={category}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveCategory(category)}
-                className={`px-6 py-2 rounded-full transition-all ${
-                  activeCategory === category
-                    ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
+                className="px-6 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-all"
               >
                 {category}
-              </motion.button>
+              </button>
             ))}
           </div>
         </div>
@@ -142,47 +180,39 @@ export function ProductsPage() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts.map((product, index) => (
+            {products.map((product) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5 }}
                 whileHover={{ y: -10 }}
-                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all"
+                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group"
               >
-                <div className="relative h-64 overflow-hidden">
+                <div className="relative h-64 overflow-hidden bg-gray-100">
                   <ImageWithFallback
                     src={product.image}
                     alt={product.title}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    fallbackSrc={FALLBACK_IMAGE}
                   />
                   <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1 bg-blue-600 text-white text-sm rounded-full">
+                    <span className="px-3 py-1 bg-blue-600 text-white text-sm rounded-full shadow-lg">
                       {product.category}
                     </span>
                   </div>
                 </div>
+
                 <div className="p-6">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
                     {product.title}
                   </h3>
-                  <p className="text-gray-600 mb-4">{product.description}</p>
-                  <div className="space-y-2">
-                    {product.features.map((feature, i) => (
-                      <div key={i} className="flex items-center gap-2 text-sm text-gray-700">
-                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                        <span>{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="mt-6 w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold"
-                  >
-                    Узнать больше
-                  </motion.button>
+                  <p className="text-gray-600 mb-4">
+                    Описание продукта {product.id}
+                  </p>
+                  <button className="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold">
+                    {t('products.detailsView')}
+                  </button>
                 </div>
               </motion.div>
             ))}
@@ -200,10 +230,10 @@ export function ProductsPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Наши преимущества
+              {t('advantages.title')}
             </h2>
             <p className="text-xl text-gray-600">
-              Что отличает нашу продукцию
+              {t('advantages.subtitle')}
             </p>
           </motion.div>
 
@@ -242,21 +272,21 @@ export function ProductsPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl font-bold text-white mb-6">
-              Нужна консультация?
+              {t('cta.title')}
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Наши специалисты помогут выбрать оптимальное решение для вашего проекта
+              {t('cta.description')}
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-10 py-4 bg-white text-blue-600 rounded-lg text-lg font-semibold shadow-xl"
             >
-              Связаться с экспертом
+              {t('cta.button')}
             </motion.button>
           </motion.div>
         </div>
       </section>
     </div>
   );
-}
+};

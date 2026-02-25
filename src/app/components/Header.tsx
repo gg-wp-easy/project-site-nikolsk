@@ -2,15 +2,17 @@ import { Link, useLocation } from "react-router";
 import { motion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export function Header() {
+  const { t } = useTranslation(); 
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
     { path: "/", label: "Главная" },
     { path: "/products", label: "Продукция" },
-    { path: "/about", label: "О компании" },
+    //{ path: "/about", label: "О компании" },
     { path: "/contact", label: "Контакты" },
   ];
 
@@ -34,7 +36,7 @@ export function Header() {
               </div>
               <div>
                 <div className="font-bold text-gray-900">GlassTech</div>
-                <div className="text-xs text-gray-500">Стекольное предприятие</div>
+                <div className="text-xs text-gray-500">{t('header.nameFacture')}</div>
               </div>
             </motion.div>
           </Link>
@@ -71,7 +73,7 @@ export function Header() {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link to="/contact">
               <button className="hidden md:block px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                Связаться
+                {t('header.connection')}
               </button>
             </Link>
           </motion.div>

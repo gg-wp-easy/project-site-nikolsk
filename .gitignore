@@ -1,3 +1,26 @@
-/guidelines
+guidelines/
 ATTRIBUTIONS.md
-/node_modules
+node_modules/
+# Dependencies
+
+# Build outputs
+dist/
+dist-ssr/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Image manifest (если генерируется при каждой сборке)
+src/shared/image-manifest.json
+
+# Optional: если манифест должен быть в репозитории, закомментируйте

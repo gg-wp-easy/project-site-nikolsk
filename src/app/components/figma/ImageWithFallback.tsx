@@ -1,28 +1,63 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 
-const ERROR_IMG_SRC =
-  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODgiIGhlaWdodD0iODgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBvcGFjaXR5PSIuMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIzLjciPjxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiByeD0iNiIvPjxwYXRoIGQ9Im0xNiA1OCAxNi0xOCAzMiAzMiIvPjxjaXJjbGUgY3g9IjUzIiBjeT0iMzUiIHI9IjciLz48L3N2Zz4KCg=='
-
-export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElement>) {
-  const [didError, setDidError] = useState(false)
-
-  const handleError = () => {
-    setDidError(true)
-  }
-
-  const { src, alt, style, className, ...rest } = props
-  console.log(props);
-
-  return didError ? (
-    <div
-      className={`inline-block bg-gray-100 text-center align-middle ${className ?? ''}`}
-      style={style}
-    >
-      <div className="flex items-center justify-center w-full h-full">
-        <img src={ERROR_IMG_SRC} alt="Error loading image" {...rest} data-original-url={src} />
-      </div>
-    </div>
-  ) : (
-    <img src={src} alt={alt} className={className} style={style} {...rest} onError={handleError} />
-  )
+interface ImageWithFallbackProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  fallbackSrc?: string;
 }
+
+export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ 
+  src, 
+  alt, 
+  className = '', 
+  fallbackSrc = 'https://via.placeholder.com/400x300?text=No+Image',
+  ...props 
+}) => {
+  const [currentSrc, setCurrentSrc] = useState<string>(src as string || fallbackSrc);
+  const [retryCount, setRetryCount] = useState(0);
+
+  // сбрасываем, когда меняется исходный src
+  useEffect(() => {
+    setCurrentSrc(src || fallbackSrc);
+    setRetryCount(0);
+  }, [src, fallbackSrc]);
+
+  // обрабатываем ошибку загрузки – сначала простой кеш‑бастер, затем fallback
+  const handleError = async () => {
+    console.log(`🖼️ Error loading: ${currentSrc}, retry ${retryCount}`);
+
+    // первый раз попробуем альтернативные расширения
+    if (retryCount === 0 && src) {
+      const basePath = src.replace(/\.\w+$/, '');
+      const extensions = ['.jpg', '.JPG', '.jpeg', '.png'];
+      for (const ext of extensions) {
+        const testUrl = `${basePath}${ext}`;
+        try {
+          const resp = await fetch(testUrl, { method: 'HEAD' });
+          if (resp.ok && resp.headers.get('content-type')?.startsWith('image')) {
+            setCurrentSrc(testUrl);
+            setRetryCount(prev => prev + 1);
+            return;
+          }
+        } catch {}
+      }
+    }
+
+    if (retryCount < 3 && src) {
+      setRetryCount(prev => prev + 1);
+      setCurrentSrc(`${src}?t=${Date.now()}`);
+    } else {
+      setCurrentSrc(fallbackSrc);
+    }
+  };
+
+
+
+  return (
+    <img
+      src={currentSrc}
+      alt={alt || 'image'}
+      className={className}
+      onError={handleError}
+      {...props}
+    />
+  );
+};

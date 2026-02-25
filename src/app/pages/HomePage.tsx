@@ -5,12 +5,10 @@ import { GlassAnimation } from "../components/animations/GlassAnimation";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
-import product1 from "../assets/images/colbs/DSC_0052.jpg"
 
 export function HomePage() {
    const { t } = useTranslation();
 
-  // stats теперь берутся из перевода
   const stats = [
     { value: "25+", label: t('stats.years') },
     { value: "500+", label: t('stats.projects') },
@@ -44,15 +42,15 @@ export function HomePage() {
   const classProducts = [
               {
                 title: t('classProducts.colbs'),
-                image: product1,
+                image: "/images/image_2.JPG",
               },
               {
                 title: t('classProducts.glassDecorate'),
-                image: "https://images.unsplash.com/photo-1648583169325-baad54257903?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZW1wZXJlZCUyMHNhZmV0eSUyMGdsYXNzJTIwd2luZG93c3xlbnwxfHx8fDE3NzE5MDg2Njd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+                image: "/images/image_60.jpeg",
               },
               {
                 title: t('classProducts.different'),
-                image: "https://images.unsplash.com/photo-1738328972285-6fbe1a8b3670?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZWNvcmF0aXZlJTIwZ2xhc3MlMjBwYW5lbHMlMjBpbnRlcmlvcnxlbnwxfHx8fDE3NzE5MDg2Njd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+                image: "/images/image_90.jpeg",
               },
             ];
   return (
@@ -122,7 +120,7 @@ export function HomePage() {
         </div>
       </section>
       {/* Stats Section */}
-      <section className="py-16 bg-white">
+      {/*<section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -142,7 +140,7 @@ export function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section>*/}
 
       {/* Features Section */}
       <section className="py-20 bg-gray-50">
