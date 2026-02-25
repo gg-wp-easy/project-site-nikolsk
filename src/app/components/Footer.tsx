@@ -73,9 +73,21 @@ export function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">{t('links.products')}</h3>
             <ul className="space-y-2 text-sm">
-              <li className="hover:text-blue-400 transition-colors cursor-pointer">{t('classProducts.colbs')}</li>
-              <li className="hover:text-blue-400 transition-colors cursor-pointer">{t('classProducts.glassDecorate')}</li>
-              <li className="hover:text-blue-400 transition-colors cursor-pointer">{t('classProducts.different')}</li>
+              <li className="hover:text-blue-400 transition-colors cursor-pointer">
+                <Link to="/products">
+                  {t('classProducts.colbs')}
+                </Link>
+              </li>
+              <li className="hover:text-blue-400 transition-colors cursor-pointer">
+                <Link to="/products">
+                  {t('classProducts.glassDecorate')}
+                </Link>
+              </li>
+              <li className="hover:text-blue-400 transition-colors cursor-pointer">
+                <Link to="/products">
+                  {t('classProducts.different')}
+                </Link>
+              </li>
             </ul>
           </div>
 

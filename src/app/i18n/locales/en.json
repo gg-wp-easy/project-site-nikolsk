@@ -47,6 +47,8 @@
     "dummyTitle": "Product {{id}}",
     "dummyDescription": "Description of product {{id}}",
     "loading": "Loading products...",
+    "prevPage": "Prev",
+    "nextPage": "Next",
     "detailsView": "Learn more",
     "closeImage": "Close image",
     "advantages": {

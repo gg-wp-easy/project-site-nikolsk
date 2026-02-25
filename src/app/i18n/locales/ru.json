@@ -47,7 +47,9 @@
     "dummyTitle": "Продукт {{id}}",
     "dummyDescription": "Описание продукта {{id}}",
     "loading": "Загрузка товаров...",
-    "detailsView": "Узнать больше",
+    "prevPage": "Назад",
+    "nextPage": "Вперед",
+    "detailsView": "Просмотреть",
     "closeImage": "Закрыть изображение",
     "advantages": {
       "safety": { "title": "Безопасность", "description": "Все продукты соответствуют стандартам безопасности" },

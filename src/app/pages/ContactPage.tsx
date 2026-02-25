@@ -44,27 +44,28 @@ export function ContactPage() {
   const faqListRaw = t('faq', { returnObjects: true });
   const faqList = Array.isArray(faqListRaw) ? faqListRaw : [];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const { name, email, phone, company, message } = formData;
+    try {
+      await fetch('https://formsubmit.co/ajax/info@glasstech.ru', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-    // prepare mailto link
-    const subject = encodeURIComponent(t('contact.form.submit'));
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCompany: ${company}\nMessage:\n${message}`
-    );
-    window.location.href = `mailto:kaevnikita@yandex.ru?subject=${subject}&body=${body}`;
-
-    // still show thank you banner
-    setIsSubmitting(false);
-    setSubmitted(true);
-    setFormData({ name: "", email: "", phone: "", company: "", message: "" });
-
-    setTimeout(() => {
-      setSubmitted(false);
-    }, 5000);
+      setSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", company: "", message: "" });
+    } catch (err) {
+      console.error('Failed to send form', err);
+      // could show error notification here
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 5000);
+    }
   };
 
   const handleChange = (
@@ -140,10 +141,9 @@ export function ContactPage() {
       </section>
 
       {/* Contact Form & Map */}
-      <section className="py-20 bg-white">
+      {/*<section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -216,7 +216,7 @@ export function ContactPage() {
                   </div>
                 </div>
 
-                {/*<div>
+              <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     {t('contact.form.fields.company')}
                   </label>
@@ -228,7 +228,7 @@ export function ContactPage() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                     placeholder={t('contact.form.placeholders.company')}
                   />
-                </div>*/}
+                </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -275,7 +275,6 @@ export function ContactPage() {
               </form>
             </motion.div>
 
-            {/* Map & Additional Info */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -283,7 +282,7 @@ export function ContactPage() {
               transition={{ duration: 0.6 }}
               className="space-y-8"
             >
-              {/*<div>
+              <div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">
                   {t('contact.map.title')}
                 </h2>
@@ -308,10 +307,9 @@ export function ContactPage() {
                     }}
                   />
                 </div>
-              </div>*/}
+              </div>
 
-              {/* Additional Info */}
-              {/*<div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-xl">
+              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-xl">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
                   {t('contact.urgent.title')}
                 </h3>
@@ -327,14 +325,14 @@ export function ContactPage() {
                   <Phone className="w-5 h-5" />
                   {t('contact.urgent.phone')}
                 </motion.a>
-              </div>*/}
+              </div>
             </motion.div>
           </div>
         </div>
-      </section>
+      </section>*/}
 
       {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
+      {/*<section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -368,7 +366,7 @@ export function ContactPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section>*/}
     </div>
   );
 }
