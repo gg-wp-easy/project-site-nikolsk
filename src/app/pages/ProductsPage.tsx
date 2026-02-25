@@ -1,14 +1,13 @@
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { CheckCircle, Shield, Sparkles, Layers } from "lucide-react";
+import { CheckCircle, Shield, Sparkles, Layers, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 // Простые типы
 interface Product {
   id: number;
   title: string;
-  category: string;
   image: string;
 }
 
@@ -18,52 +17,59 @@ interface Advantage {
   description: string;
 }
 
-// Константа для заглушки
-const FALLBACK_IMAGE = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%25\' height=\'100%25\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%23f3f4f6\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-family=\'system-ui\' font-size=\'14\'%3EИзображение не загружено%3C/text%3E%3C/svg%3E';
 
-const advantages: Advantage[] = [
-  {
-    icon: Shield,
-    title: "Безопасность",
-    description: "Все продукты соответствуют стандартам безопасности",
-  },
-  {
-    icon: Sparkles,
-    title: "Качество",
-    description: "Используем только премиальное сырье",
-  },
-  {
-    icon: Layers,
-    title: "Технологии",
-    description: "Современное оборудование и методы производства",
-  },
-  {
-    icon: CheckCircle,
-    title: "Гарантия",
-    description: "Долгосрочная гарантия на всю продукцию",
-  },
-];
+// advantages array will be generated inside component to allow translation
 
 export const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [modalSrc, setModalSrc] = useState<string | null>(null);
+  const [modalLoading, setModalLoading] = useState(false);
+
   const { t } = useTranslation();
 
-  const categories = [
-    t('classProducts.all'),
-    t('classProducts.colbs'),
-    t('classProducts.glassDecorate'),
-    t('classProducts.different')
+  const fallbackText = t('image.notLoaded');
+  const FALLBACK_IMAGE =
+    'data:image/svg+xml,' +
+    encodeURIComponent(`
+      <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>
+        <rect width='100%' height='100%' fill='#f3f4f6'/>
+        <text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='#9ca3af' font-family='system-ui' font-size='14'>
+          ${fallbackText}
+        </text>
+      </svg>
+    `);
+
+  const advantages: Advantage[] = [
+    {
+      icon: Shield,
+      title: t('products.advantages.safety.title'),
+      description: t('products.advantages.safety.description'),
+    },
+    {
+      icon: Sparkles,
+      title: t('products.advantages.quality.title'),
+      description: t('products.advantages.quality.description'),
+    },
+    {
+      icon: Layers,
+      title: t('products.advantages.technology.title'),
+      description: t('products.advantages.technology.description'),
+    },
+    {
+      icon: CheckCircle,
+      title: t('products.advantages.warranty.title'),
+      description: t('products.advantages.warranty.description'),
+    },
   ];
 
-  // Просто загружаем изображения 1-50
+
   useEffect(() => {
     const loadProducts = async () => {
       console.log('📸 Загрузка изображений...');
       const loadedProducts: Product[] = [];
       
-      // Пробуем загрузить до 50 изображений
-      for (let i = 1; i <= 50; i++) {
+      for (let i = 1; i <= 90; i++) {
         // Пробуем разные расширения
         const extensions = ['jpg', 'JPG', 'jpeg', 'png'];
         let found = false;
@@ -76,27 +82,19 @@ export const ProductsPage: React.FC = () => {
             if (response.ok) {
               console.log(`✅ Найдено: image_${i}.${ext}`);
               
-              // Определяем категорию
-              const categoryIndex = (i - 1) % 3;
-              const category = categoryIndex === 0 ? categories[1] : 
-                              categoryIndex === 1 ? categories[2] : 
-                              categories[3];
-              
               loadedProducts.push({
                 id: i,
-                title: `Продукт ${i}`,
-                category: category,
-                image: imagePath
+                title: t('products.dummyTitle', { id: i }),
+                image: imagePath,
               });
               found = true;
               break;
             }
           } catch {
-            // Игнорируем ошибки
+            // игнор
           }
         }
         
-        // Если 3 раза подряд не нашли, прекращаем поиск
         if (!found && i > 3) {
           let misses = 0;
           for (let j = i - 3; j < i; j++) {
@@ -113,13 +111,13 @@ export const ProductsPage: React.FC = () => {
             if (!found_j) misses++;
           }
           if (misses >= 3) {
-            console.log(`🛑 Остановка после ${i-1} изображений`);
+            console.log(`🛑 Остановка после ${i - 1} изображений`);
             break;
           }
         }
       }
       
-      console.log(`📊 Всего загружено: ${loadedProducts.length} товаров`);
+      //console.log(`📊 Всего загружено: ${loadedProducts.length} товаров`);
       setProducts(loadedProducts);
       setLoading(false);
     };
@@ -132,7 +130,7 @@ export const ProductsPage: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Загрузка товаров...</p>
+          <p className="text-gray-600">{t('products.loading')}</p>
         </div>
       </div>
     );
@@ -154,25 +152,6 @@ export const ProductsPage: React.FC = () => {
           >
             {t('products.title')}
           </motion.h1>
-          <p className="text-lg text-blue-100">
-            Всего товаров: {products.length}
-          </p>
-        </div>
-      </section>
-
-      {/* Category Filter */}
-      <section className="py-8 bg-white shadow-sm sticky top-[73px] z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-3 justify-center">
-            {categories.map((category) => (
-              <button
-                key={category}
-                className="px-6 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-all"
-              >
-                {category}
-              </button>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -193,14 +172,9 @@ export const ProductsPage: React.FC = () => {
                   <ImageWithFallback
                     src={product.image}
                     alt={product.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                     fallbackSrc={FALLBACK_IMAGE}
                   />
-                  <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1 bg-blue-600 text-white text-sm rounded-full shadow-lg">
-                      {product.category}
-                    </span>
-                  </div>
                 </div>
 
                 <div className="p-6">
@@ -208,9 +182,16 @@ export const ProductsPage: React.FC = () => {
                     {product.title}
                   </h3>
                   <p className="text-gray-600 mb-4">
-                    Описание продукта {product.id}
+                    {t('products.dummyDescription', { id: product.id })}
                   </p>
-                  <button className="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold">
+                  <button
+                    onClick={() => {
+                      console.log('open modal', product.image);
+                      setModalSrc(product.image);
+                      setModalLoading(true);
+                    }}
+                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold"
+                  >
                     {t('products.detailsView')}
                   </button>
                 </div>
@@ -219,6 +200,42 @@ export const ProductsPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+
+      {/* modal overlay */}
+      {modalSrc && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300"
+          onClick={() => setModalSrc(null)}
+        >
+          <div className="relative">
+            <button
+              onClick={(e) => { e.stopPropagation(); setModalSrc(null); }}
+              aria-label={t('products.closeImage')}
+              className="absolute top-2 right-2 text-white p-1 rounded-full bg-black bg-opacity-50 hover:bg-opacity-75 transition"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            {modalLoading && (
+              <div className="w-1/2 h-1/2 bg-gray-200 animate-pulse" />
+            )}
+            <div className="max-w-[90vw] max-h-[90vh]">
+              <ImageWithFallback
+                src={modalSrc}
+                alt=""
+                className={`w-full h-full object-contain ${modalLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}
+                fallbackSrc={FALLBACK_IMAGE}
+                onClick={(e) => e.stopPropagation()}
+                onLoad={() => setModalLoading(false)}
+                onError={() => {
+                  setModalLoading(false);
+                  console.log('modal image error');
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Advantages Section */}
       <section className="py-20 bg-white">
@@ -230,10 +247,10 @@ export const ProductsPage: React.FC = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              {t('advantages.title')}
+              {t('features.title')}
             </h2>
-            <p className="text-xl text-gray-600">
-              {t('advantages.subtitle')}
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              {t('features.subtitle')}
             </p>
           </motion.div>
 

@@ -1,7 +1,11 @@
 {
+  "header": {
+    "nameFacture": "Glass Factory",
+    "connection": "Contact"
+  },
   "hero": {
-    "title": "Creating the future",
-    "titleHighlight": "from glass",
+    "title": "Shaping the future",
+    "titleHighlight": "with glass",
     "description": "Production of premium architectural and decorative glass for modern projects",
     "products": "Our products",
     "contact": "Contact us"
@@ -16,7 +20,7 @@
     "title": "Why choose us",
     "subtitle": "We offer the best solutions for your projects",
     "quality": {
-      "title": "High Quality",
+      "title": "High quality",
       "description": "Compliance with international ISO 9001 standards"
     },
     "innovation": {
@@ -24,30 +28,199 @@
       "description": "Modern glass production technologies"
     },
     "team": {
-      "title": "Experienced Team",
-      "description": "Qualified specialists with years of experience"
+      "title": "Experienced team",
+      "description": "Qualified specialists with many years of experience"
     },
     "reliability": {
       "title": "Reliability",
-      "description": "Quality guarantee for all products"
+      "description": "Quality guarantee on all products"
     }
   },
   "products": {
-    "title": "Our Products",
+    "title": "Our products",
     "subtitle": "Wide range of glass products",
-    "architectural": "Architectural Glass",
-    "tempered": "Tempered Glass",
-    "decorative": "Decorative Glass",
-    "details": "Learn more",
-    "viewAll": "View all products"
+    "architectural": "Architectural glass",
+    "tempered": "Tempered glass",
+    "decorative": "Decorative glass",
+    "details": "Details",
+    "viewAll": "View all products",
+    "dummyTitle": "Product {{id}}",
+    "dummyDescription": "Description of product {{id}}",
+    "loading": "Loading products...",
+    "detailsView": "Learn more",
+    "closeImage": "Close image",
+    "advantages": {
+      "safety": { "title": "Safety", "description": "All products meet safety standards" },
+      "quality": { "title": "Quality", "description": "We use only premium raw materials" },
+      "technology": { "title": "Technology", "description": "Modern equipment and production methods" },
+      "warranty": { "title": "Warranty", "description": "Long-term warranty on all products" }
+    }
   },
   "cta": {
-    "title": "Ready to start your project?",
+    "title": "Ready to buy our products?",
     "description": "Contact us for consultation and cost calculation",
     "button": "Get consultation"
   },
   "language": {
     "ru": "Russian",
     "en": "English"
+  },
+  "links": {
+    "home": "Home",
+    "about": "About us",
+    "products": "Products",
+    "contact": "Contact"
+  },
+  "about": {
+    "hero": {
+      "title": "About company",
+      "subtitle": "Over 25 years creating glass that transforms city skylines",
+      "alt": "About company"
+    },
+    "story": {
+      "title": "Our story",
+      "p1": "GlassTech was founded in 2001 with the goal of producing high-quality architectural glass for the Russian market.",
+      "p2": "Starting with a small production facility, we gradually expanded, implementing the latest technologies and equipment.",
+      "p3": "Today we are one of the leading glass product manufacturers in Russia, working with major construction and architectural companies.",
+      "p4": "Our team of over 50 specialists possesses unique knowledge and experience, allowing us to implement the most complex and ambitious projects.",
+      "imageAlt": "Production"
+    },
+    "milestones": {
+      "2001": "Company foundation",
+      "2008": "Production expansion",
+      "2015": "International market entry",
+      "2020": "New technologies implementation",
+      "2024": "Industry leader in the region",
+      "2026": "500+ completed projects"
+    },
+    "principles": {
+      "title": "Our principles",
+      "subtitle": "What drives us every day"
+    },
+    "values": {
+      "mission": {
+        "title": "Mission",
+        "description": "Production of world-class innovative glass products that make architecture safer, more energy-efficient and beautiful."
+      },
+      "vision": {
+        "title": "Vision",
+        "description": "Become the leading manufacturer of architectural glass in Russia and CIS, setting new standards of quality and innovation."
+      },
+      "values": {
+        "title": "Values",
+        "description": "Quality, innovation, responsibility, professionalism and customer focus are the foundation of all our decisions."
+      }
+    },
+    "stats": {
+      "completedProjects": "Completed projects",
+      "specialists": "Qualified specialists",
+      "countries": "Partner countries",
+      "years": "Years on market"
+    },
+    "timeline": {
+      "title": "Our journey",
+      "subtitle": "Key moments in company history"
+    },
+    "team": {
+      "title": "Our team",
+      "subtitle": "Professionals in their field",
+      "petrov": {
+        "position": "CEO",
+        "description": "25 years of experience in glass industry"
+      },
+      "smirnova": {
+        "position": "Technical Director",
+        "description": "Expert in innovative technologies"
+      },
+      "ivanov": {
+        "position": "Quality Director",
+        "description": "ISO certified specialist"
+      },
+      "sokolova": {
+        "position": "Commercial Director",
+        "description": "Experience with international projects"
+      }
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Contact us",
+      "subtitle": "We are always happy to answer your questions and discuss your project"
+    },
+    "cards": {
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Working hours"
+    },
+    "details": {
+      "address": ["Moscow", "Promyshlennaya St., 45", "127018"],
+      "phone": ["+7 (495) 123-45-67", "+7 (495) 123-45-68", "Toll-free in Russia"],
+      "hours": ["Mon-Fri: 9:00 - 18:00", "Sat: 10:00 - 15:00", "Sun: closed"]
+    },
+    "form": {
+      "title": "Send us a message",
+      "subtitle": "Fill out the form and we will contact you shortly",
+      "thankyou": "✓ Thank you for your message! We will contact you soon.",
+      "fields": {
+        "name": "Your name *",
+        "email": "Email *",
+        "phone": "Phone",
+        "company": "Company",
+        "message": "Message"
+      },
+      "placeholders": {
+        "name": "John Smith",
+        "email": "example@email.com",
+        "phone": "+7 (495) 123-45-67",
+        "company": "Company name",
+        "message": "Your message..."
+      },
+      "sending": "Sending...",
+      "submit": "Send message"
+    }
+  },
+  "map": {
+    "title": "Where to find us",
+    "placeholder": "Interactive map will be here"
+  },
+  "urgent": {
+    "title": "Need urgent consultation?",
+    "description": "Call us right now and our specialists will answer all your questions",
+    "phone": "+7 (495) 123-45-67"
+  },
+  "faq": [
+    {
+      "q": "What are the production times?",
+      "a": "Standard orders are completed within 7-14 days. Complex projects are discussed individually."
+    },
+    {
+      "q": "Do you provide warranty?",
+      "a": "Yes, all our products come with a warranty from 1 to 5 years depending on the product type."
+    },
+    {
+      "q": "Is delivery to regions possible?",
+      "a": "Yes, we deliver throughout Russia and CIS countries. Cost is calculated individually."
+    },
+    {
+      "q": "Do you fulfill custom orders?",
+      "a": "Of course! We specialize in custom solutions and are ready to implement projects of any complexity."
+    }
+  ],
+  "classProducts": {
+    "all": "All",
+    "colbs": "Flasks",
+    "glassDecorate": "Painted products",
+    "different": "Various products"
+  },
+  "footer": {
+    "boldTitle": "",
+    "description": "Production of high-quality glass products",
+    "address": "Moscow, Promyshlennaya St., 45",
+    "navigationLabel": "Navigation",
+    "rights": "© 2026. All rights reserved."
+  },
+  "image": {
+    "notLoaded": "Image not loaded"
   }
 }

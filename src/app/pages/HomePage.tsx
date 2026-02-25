@@ -9,12 +9,12 @@ import { LanguageSwitcher } from "../components/LanguageSwitcher";
 export function HomePage() {
    const { t } = useTranslation();
 
-  const stats = [
+  /*const stats = [
     { value: "25+", label: t('stats.years') },
     { value: "500+", label: t('stats.projects') },
     { value: "100%", label: t('stats.quality') },
     { value: "50+", label: t('stats.employees') },
-  ];
+  ];*/
 
   const features = [
     {

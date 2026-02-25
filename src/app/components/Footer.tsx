@@ -83,13 +83,13 @@ export function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">{t('links.contact')}</h3>
             <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-2">
+              {/*<li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-1 text-blue-400" />
-                <span></span>
-              </li>
+                <span>{t('footer.address')}</span>
+              </li>*/}
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-blue-400" />
-                <span>+7 (495) 123-45-67</span>
+                <span>{t('contact.details.phone.0')}</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-blue-400" />
@@ -100,7 +100,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
-          <p>&copy; 2026. Все права защищены.</p>
+          <p>{t('footer.rights')}</p>
         </div>
       </div>
     </footer>

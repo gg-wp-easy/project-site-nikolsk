@@ -10,10 +10,10 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { path: "/", label: "Главная" },
-    { path: "/products", label: "Продукция" },
-    //{ path: "/about", label: "О компании" },
-    { path: "/contact", label: "Контакты" },
+    { path: "/", label: t('links.home') },
+    { path: "/products", label: t('links.products') },
+    //{ path: "/about", label: t('links.about') },
+    { path: "/contact", label: t('links.contact') },
   ];
 
   return (
@@ -32,10 +32,10 @@ export function Header() {
               className="flex items-center gap-2"
             >
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">G</span>
+                {/*<span className="text-white font-bold text-xl">G</span>*/}
               </div>
               <div>
-                <div className="font-bold text-gray-900">GlassTech</div>
+                {/*<div className="font-bold text-gray-900">GlassTech</div>*/}
                 <div className="text-xs text-gray-500">{t('header.nameFacture')}</div>
               </div>
             </motion.div>
@@ -118,7 +118,7 @@ export function Header() {
             ))}
             <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
               <button className="w-full mt-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg">
-                Связаться
+                {t('header.connection')}
               </button>
             </Link>
           </motion.nav>

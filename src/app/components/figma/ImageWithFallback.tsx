@@ -9,6 +9,8 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   alt, 
   className = '', 
   fallbackSrc = 'https://via.placeholder.com/400x300?text=No+Image',
+  onLoad, // optional callbacks
+  onError, 
   ...props 
 }) => {
   const [currentSrc, setCurrentSrc] = useState<string>(src as string || fallbackSrc);
@@ -21,7 +23,11 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   }, [src, fallbackSrc]);
 
   // обрабатываем ошибку загрузки – сначала простой кеш‑бастер, затем fallback
-  const handleError = async () => {
+  const handleError = async (e?: React.SyntheticEvent<HTMLImageElement>) => {
+    // позовём внешний обработчик, если был
+    if (onError) {
+      try { onError(e as any); } catch {} // не останавливать
+    }
     console.log(`🖼️ Error loading: ${currentSrc}, retry ${retryCount}`);
 
     // первый раз попробуем альтернативные расширения
@@ -51,12 +57,19 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
 
 
 
+  const handleLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    if (onLoad) {
+      try { onLoad(e); } catch {}
+    }
+  };
+
   return (
     <img
       src={currentSrc}
       alt={alt || 'image'}
       className={className}
       onError={handleError}
+      onLoad={handleLoad}
       {...props}
     />
   );

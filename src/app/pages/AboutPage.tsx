@@ -1,84 +1,85 @@
 import { motion } from "motion/react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Target, Eye, Award, TrendingUp, Users, Globe } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-const milestones = [
-  { year: "2001", event: "Основание компании" },
-  { year: "2008", event: "Расширение производства" },
-  { year: "2015", event: "Выход на международный рынок" },
-  { year: "2020", event: "Внедрение новых технологий" },
-  { year: "2024", event: "Лидер отрасли в регионе" },
-  { year: "2026", event: "500+ реализованных проектов" },
-];
-
-const values = [
-  {
-    icon: Target,
-    title: "Миссия",
-    description:
-      "Производство инновационной стекольной продукции мирового уровня, которая делает архитектуру безопаснее, энергоэффективнее и красивее.",
-  },
-  {
-    icon: Eye,
-    title: "Видение",
-    description:
-      "Стать ведущим производителем архитектурного стекла в России и СНГ, устанавливая новые стандарты качества и инноваций.",
-  },
-  {
-    icon: Award,
-    title: "Ценности",
-    description:
-      "Качество, инновации, ответственность, профессионализм и клиентоориентированность - основа всех наших решений.",
-  },
-];
-
-const stats = [
-  {
-    icon: TrendingUp,
-    value: "500+",
-    label: "Завершенных проектов",
-  },
-  {
-    icon: Users,
-    value: "50+",
-    label: "Квалифицированных специалистов",
-  },
-  {
-    icon: Globe,
-    value: "15",
-    label: "Стран-партнеров",
-  },
-  {
-    icon: Award,
-    value: "25+",
-    label: "Лет на рынке",
-  },
-];
-
-const team = [
-  {
-    name: "Александр Петров",
-    position: "Генеральный директор",
-    description: "25 лет опыта в стекольной промышленности",
-  },
-  {
-    name: "Елена Смирнова",
-    position: "Технический директор",
-    description: "Эксперт в области инновационных технологий",
-  },
-  {
-    name: "Михаил Иванов",
-    position: "Директор по качеству",
-    description: "Сертифицированный специалист ISO",
-  },
-  {
-    name: "Ольга Соколова",
-    position: "Коммерческий директор",
-    description: "Опыт работы с международными проектами",
-  },
-];
 
 export function AboutPage() {
+  const { t } = useTranslation();
+
+  const milestones = [
+    { year: "2001", event: t('about.milestones.2001') },
+    { year: "2008", event: t('about.milestones.2008') },
+    { year: "2015", event: t('about.milestones.2015') },
+    { year: "2020", event: t('about.milestones.2020') },
+    { year: "2024", event: t('about.milestones.2024') },
+    { year: "2026", event: t('about.milestones.2026') },
+  ];
+
+  const values = [
+    {
+      icon: Target,
+      title: t('about.values.mission.title'),
+      description: t('about.values.mission.description'),
+    },
+    {
+      icon: Eye,
+      title: t('about.values.vision.title'),
+      description: t('about.values.vision.description'),
+    },
+    {
+      icon: Award,
+      title: t('about.values.values.title'),
+      description: t('about.values.values.description'),
+    },
+  ];
+
+  const stats = [
+    {
+      icon: TrendingUp,
+      value: "500+",
+      label: t('about.stats.completedProjects'),
+    },
+    {
+      icon: Users,
+      value: "50+",
+      label: t('about.stats.specialists'),
+    },
+    {
+      icon: Globe,
+      value: "15",
+      label: t('about.stats.countries'),
+    },
+    {
+      icon: Award,
+      value: "25+",
+      label: t('about.stats.years'),
+    },
+  ];
+
+  const team = [
+    {
+      name: "Александр Петров",
+      position: t('about.team.petrov.position'),
+      description: t('about.team.petrov.description'),
+    },
+    {
+      name: "Елена Смирнова",
+      position: t('about.team.smirnova.position'),
+      description: t('about.team.smirnova.description'),
+    },
+    {
+      name: "Михаил Иванов",
+      position: t('about.team.ivanov.position'),
+      description: t('about.team.ivanov.description'),
+    },
+    {
+      name: "Ольга Соколова",
+      position: t('about.team.sokolova.position'),
+      description: t('about.team.sokolova.description'),
+    },
+  ];
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -86,7 +87,7 @@ export function AboutPage() {
         <div className="absolute inset-0">
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1610896813398-6e965b3cc1b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnbGFzcyUyMG1hbnVmYWN0dXJpbmclMjBmYWN0b3J5fGVufDF8fHx8MTc3MTkwODY2Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-            alt="О компании"
+            alt={t('about.hero.alt')}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-cyan-900/70" />
@@ -99,7 +100,7 @@ export function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-5xl md:text-6xl font-bold text-white mb-6"
           >
-            О компании
+            {t('about.hero.title')}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
@@ -107,7 +108,7 @@ export function AboutPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl text-gray-200 max-w-3xl mx-auto"
           >
-            Более 25 лет создаём стекло, которое меняет облик городов
+            {t('about.hero.subtitle')}
           </motion.p>
         </div>
       </section>
@@ -123,23 +124,19 @@ export function AboutPage() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Наша история
+                {t('about.story.title')}
               </h2>
               <p className="text-lg text-gray-600 mb-4">
-                GlassTech была основана в 2001 году с целью производства
-                высококачественного архитектурного стекла для российского рынка.
-                Начав с небольшого производства, мы постепенно расширялись,
-                внедряя новейшие технологии и оборудование.
+                {t('about.story.p1')}
               </p>
               <p className="text-lg text-gray-600 mb-4">
-                Сегодня мы - один из ведущих производителей стекольной продукции
-                в России, работающий с крупнейшими строительными и
-                архитектурными компаниями.
+                {t('about.story.p2')}
               </p>
               <p className="text-lg text-gray-600">
-                Наша команда из более чем 50 специалистов обладает уникальными
-                знаниями и опытом, позволяющими реализовывать самые сложные и
-                амбициозные проекты.
+                {t('about.story.p3')}
+              </p>
+              <p className="text-lg text-gray-600">
+                {t('about.story.p4')}
               </p>
             </motion.div>
 
@@ -153,7 +150,7 @@ export function AboutPage() {
               <div className="rounded-2xl overflow-hidden shadow-2xl">
                 <ImageWithFallback
                   src="https://images.unsplash.com/photo-1575305842946-0e807ce6f3fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnbGFzcyUyMGN1dHRpbmclMjBwcmVjaXNpb24lMjB3b3JrfGVufDF8fHx8MTc3MTkwODY2N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                  alt="Производство"
+                  alt={t('about.story.imageAlt')}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -177,10 +174,10 @@ export function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Наши принципы
+              {t('about.principles.title')}
             </h2>
             <p className="text-xl text-gray-600">
-              Что движет нами каждый день
+              {t('about.principles.subtitle')}
             </p>
           </motion.div>
 
@@ -224,10 +221,10 @@ export function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Наш путь
+              {t('about.timeline.title')}
             </h2>
             <p className="text-xl text-gray-600">
-              Ключевые моменты в истории компании
+              {t('about.timeline.subtitle')}
             </p>
           </motion.div>
 
@@ -314,10 +311,10 @@ export function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Наша команда
+              {t('about.team.title')}
             </h2>
             <p className="text-xl text-gray-600">
-              Профессионалы своего дела
+              {t('about.team.subtitle')}
             </p>
           </motion.div>
 

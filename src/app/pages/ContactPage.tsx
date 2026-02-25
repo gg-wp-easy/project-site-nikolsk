@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const contactInfo = [
   {
@@ -26,6 +27,31 @@ const contactInfo = [
 ];
 
 export function ContactPage() {
+  const { t } = useTranslation();
+
+  const contactInfo = [
+    {
+      icon: MapPin,
+      title: t('contact.cards.address'),
+      details: t('contact.details.address', { returnObjects: true }),
+    },
+    {
+      icon: Phone,
+      title: t('contact.cards.phone'),
+      details: t('contact.details.phone', { returnObjects: true }),
+    },
+    {
+      icon: Mail,
+      title: t('contact.cards.email'),
+      details: ["info@glasstech.ru", "sales@glasstech.ru", "support@glasstech.ru"],
+    },
+    {
+      icon: Clock,
+      title: t('contact.cards.hours'),
+      details: t('contact.details.hours', { returnObjects: true }),
+    },
+  ];
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -82,7 +108,7 @@ export function ContactPage() {
             transition={{ duration: 0.6 }}
             className="text-5xl md:text-6xl font-bold text-white mb-6"
           >
-            Свяжитесь с нами
+            {t('contact.hero.title')}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
@@ -90,7 +116,7 @@ export function ContactPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl text-gray-200 max-w-3xl mx-auto"
           >
-            Мы всегда рады ответить на ваши вопросы и обсудить ваш проект
+            {t('contact.hero.subtitle')}
           </motion.p>
         </div>
       </section>
@@ -143,10 +169,10 @@ export function ContactPage() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Отправьте нам сообщение
+                {t('contact.form.title')}
               </h2>
               <p className="text-gray-600 mb-8">
-                Заполните форму, и мы свяжемся с вами в ближайшее время
+                {t('contact.form.subtitle')}
               </p>
 
               {submitted && (
@@ -156,7 +182,7 @@ export function ContactPage() {
                   className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg"
                 >
                   <p className="text-green-800">
-                    ✓ Спасибо за ваше сообщение! Мы скоро свяжемся с вами.
+                    {t('contact.form.thankyou')}
                   </p>
                 </motion.div>
               )}
@@ -173,14 +199,14 @@ export function ContactPage() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                    placeholder="Иван Иванов"
+                    placeholder={t('contact.form.placeholders.name')}
                   />
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email *
+                      {t('contact.form.fields.email')}
                     </label>
                     <input
                       type="email"
@@ -189,13 +215,13 @@ export function ContactPage() {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                      placeholder="example@email.com"
+                      placeholder={t('contact.form.placeholders.email')}
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Телефон
+                      {t('contact.form.fields.phone')}
                     </label>
                     <input
                       type="tel"
@@ -203,14 +229,14 @@ export function ContactPage() {
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                      placeholder="+7 (___) ___-__-__"
+                      placeholder={t('contact.form.placeholders.phone')}
                     />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Компания
+                    {t('contact.form.fields.company')}
                   </label>
                   <input
                     type="text"
@@ -218,13 +244,13 @@ export function ContactPage() {
                     value={formData.company}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                    placeholder="Название компании"
+                    placeholder={t('contact.form.placeholders.company')}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Сообщение *
+                    {t('contact.form.fields.message')}
                   </label>
                   <textarea
                     name="message"
@@ -233,7 +259,7 @@ export function ContactPage() {
                     required
                     rows={5}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
-                    placeholder="Расскажите о вашем проекте..."
+                    placeholder={t('contact.form.placeholders.message')}
                   />
                 </div>
 
@@ -255,12 +281,12 @@ export function ContactPage() {
                         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                         className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
                       />
-                      Отправка...
+                      {t('contact.form.sending')}
                     </>
                   ) : (
                     <>
                       <Send className="w-5 h-5" />
-                      Отправить сообщение
+                      {t('contact.form.submit')}
                     </>
                   )}
                 </motion.button>
@@ -277,7 +303,7 @@ export function ContactPage() {
             >
               <div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                  Где нас найти
+                  {t('contact.map.title')}
                 </h2>
 
                 {/* Map Placeholder */}
@@ -286,10 +312,10 @@ export function ContactPage() {
                     <div className="text-center">
                       <MapPin className="w-16 h-16 text-blue-600 mx-auto mb-4" />
                       <p className="text-gray-600 font-semibold">
-                        г. Москва, ул. Промышленная, 45
+                        {t('contact.details.address.0')}, {t('contact.details.address.1')}
                       </p>
                       <p className="text-sm text-gray-500 mt-2">
-                        Здесь будет интерактивная карта
+                        {t('contact.map.placeholder')}
                       </p>
                     </div>
                   </div>
@@ -306,11 +332,10 @@ export function ContactPage() {
               {/* Additional Info */}
               <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-xl">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  Нужна срочная консультация?
+                  {t('contact.urgent.title')}
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  Позвоните нам прямо сейчас, и наши специалисты ответят на все
-                  ваши вопросы
+                  {t('contact.urgent.description')}
                 </p>
                 <motion.a
                   href="tel:+74951234567"
@@ -319,7 +344,7 @@ export function ContactPage() {
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold shadow-md"
                 >
                   <Phone className="w-5 h-5" />
-                  +7 (495) 123-45-67
+                  {t('contact.urgent.phone')}
                 </motion.a>
               </div>
             </motion.div>
@@ -337,32 +362,15 @@ export function ContactPage() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Часто задаваемые вопросы
+              {t('contact.faqTitle')}
             </h2>
             <p className="text-gray-600">
-              Ответы на популярные вопросы наших клиентов
+              {t('contact.faqSubtitle')}
             </p>
           </motion.div>
 
           <div className="space-y-4">
-            {[
-              {
-                q: "Какие сроки производства?",
-                a: "Стандартные заказы выполняются в течение 7-14 дней. Сложные проекты обсуждаются индивидуально.",
-              },
-              {
-                q: "Предоставляете ли вы гарантию?",
-                a: "Да, на всю нашу продукцию предоставляется гарантия от 1 до 5 лет в зависимости от типа изделия.",
-              },
-              {
-                q: "Возможна ли доставка в регионы?",
-                a: "Да, мы осуществляем доставку по всей России и странам СНГ. Стоимость рассчитывается индивидуально.",
-              },
-              {
-                q: "Выполняете ли вы индивидуальные заказы?",
-                a: "Конечно! Мы специализируемся на индивидуальных решениях и готовы реализовать проект любой сложности.",
-              },
-            ].map((faq, index) => (
+            {t('contact.faq', { returnObjects: true }).map((faq: any, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
