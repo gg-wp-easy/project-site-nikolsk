@@ -85,11 +85,11 @@ export const ProductsPage = (): JSX.Element => {
       title: t("products.advantages.technology.title"),
       description: t("products.advantages.technology.description"),
     },
-    {
+    /*{
       icon: CheckCircle,
       title: t("products.advantages.warranty.title"),
       description: t("products.advantages.warranty.description"),
-    },
+    },*/
   ];
 
   useEffect(() => {
@@ -328,7 +328,7 @@ export const ProductsPage = (): JSX.Element => {
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">{t("features.subtitle")}</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {advantages.map((advantage, index) => (
               <motion.div
                 key={advantage.title}

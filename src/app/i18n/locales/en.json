@@ -168,6 +168,14 @@
       "email": "Email",
       "hours": "Working hours"
     },
+    "phoneLabels": {
+      "sales": "Sales department",
+      "production": "Production department"
+    },
+    "messengers": {
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp"
+    },
     "details": {
       "address": ["Moscow", "Promyshlennaya St., 45", "127018"],
       "phone": ["+7 (495) 123-45-67", "+7 (495) 123-45-68", "Toll-free in Russia"],

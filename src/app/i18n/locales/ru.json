@@ -168,6 +168,14 @@
       "email": "Email",
       "hours": "Часы работы"
     },
+    "phoneLabels": {
+      "sales": "Отдел продаж",
+      "production": "Производственный отдел"
+    },
+    "messengers": {
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp"
+    },
     "details": {
       "address": ["г. Москва", "ул. Промышленная, 45", "127018"],
       "phone": ["+7 (495) 123-45-67", "+7 (495) 123-45-68", "Бесплатно по России"],
