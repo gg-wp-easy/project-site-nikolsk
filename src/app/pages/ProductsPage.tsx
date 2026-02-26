@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, JSX } from "react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { CheckCircle, Shield, Sparkles, Layers, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
