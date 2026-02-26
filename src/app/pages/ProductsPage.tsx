@@ -13,12 +13,16 @@ import {
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import productManifest from "../shared/product-manifest.json";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import productsData from "../shared/products-data.json";
 
 interface Product {
   id: number;
   title: string;
   image: string;
   category: Exclude<ProductCategorySlug, "all">;
+  description: string;
 }
 
 interface Advantage {
@@ -43,6 +47,18 @@ type ProductManifest = {
 };
 
 const manifest = productManifest as ProductManifest;
+
+type ProductDataItem = {
+  filename: string;
+  title: string;
+  description: string;
+};
+
+type ProductsData = {
+  categories: Record<string, ProductDataItem[]>;
+};
+
+const productsCatalog = productsData as ProductsData;
 
 export const ProductsPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -103,13 +119,20 @@ export const ProductsPage = (): JSX.Element => {
     for (const category of PRODUCT_IMAGE_CATEGORIES) {
       if (!category.folder) continue;
       const items = manifest.categories?.[category.folder] ?? [];
+      const catalogItems = productsCatalog.categories?.[category.folder] ?? [];
 
       for (const item of items) {
+        const meta = catalogItems.find((entry) => entry.filename === item.filename);
         loaded.push({
           id: productId++,
-          title: t("products.dummyTitle", { id: item.id }),
+          title: meta?.title?.trim()
+            ? meta.title
+            : t("products.dummyTitle", { id: item.id }),
           image: item.src,
           category: category.slug,
+          description: meta?.description?.trim()
+            ? meta.description
+            : t("products.dummyDescription", { id: item.id }),
         });
       }
     }
@@ -228,7 +251,7 @@ export const ProductsPage = (): JSX.Element => {
                         {product.title}
                       </h3>
                       <p className="text-gray-600 mb-4">
-                        {t("products.dummyDescription", { id: product.id })}
+                        {product.description}
                       </p>
                       <button
                         onClick={() => {
