@@ -153,13 +153,17 @@ export function ContactPage() {
                     info.phones.map((phone) => (
                       <div key={phone.digits} className="text-sm text-gray-600">
                         <div className="font-medium text-gray-900">{phone.label}</div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center gap-2 text-gray-300">
+                            <Phone className="w-4 h-4 text-blue-400" />
                           <a
                             href={`tel:+${phone.digits}`}
                             className="text-blue-600 hover:text-blue-700"
                           >
                             {phone.display}
                           </a>
+                          </div>
+                          
                           <a
                             href={`https://t.me/+${phone.digits}`}
                             target="_blank"

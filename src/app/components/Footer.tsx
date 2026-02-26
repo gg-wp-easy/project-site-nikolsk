@@ -22,24 +22,36 @@ export function Footer() {
             <p className="text-sm mb-4">
               {t('footer.description')}
             </p>
-            <div className="flex gap-4">
+            <div className="text-sm font-semibold text-gray-200 mb-2">
+              {t('footer.marketplaces')}
+            </div>
+            <div className="flex gap-4 text-base">
               <motion.a
-                whileHover={{ scale: 1.1, y: -2 }}
-                href="#"
-                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
+                whileHover={{ y: -2 }}
+                href="https://www.wildberries.ru"
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-gray-100 hover:text-pink-400 transition-colors"
               >
+                Wildberries
               </motion.a>
               <motion.a
-                whileHover={{ scale: 1.1, y: -2 }}
-                href="#"
-                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
+                whileHover={{ y: -2 }}
+                href="https://www.ozon.ru"
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-gray-100 hover:text-blue-400 transition-colors"
               >
+                Ozon
               </motion.a>
               <motion.a
-                whileHover={{ scale: 1.1, y: -2 }}
-                href="#"
-                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
+                whileHover={{ y: -2 }}
+                href="https://market.yandex.ru"
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-gray-100 hover:text-yellow-400 transition-colors"
               >
+                Yandex Market
               </motion.a>
             </div>
           </div>
@@ -90,10 +102,6 @@ export function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">{t('links.contact')}</h3>
             <div className="space-y-4 text-sm">
-              <div className="flex items-center gap-2 text-gray-300">
-                <Phone className="w-4 h-4 text-blue-400" />
-                <span>{t('contact.cards.phone')}</span>
-              </div>
               <div className="space-y-3">
                 {[
                   {
@@ -109,12 +117,16 @@ export function Footer() {
                 ].map((phone) => (
                   <div key={phone.digits} className="space-y-1">
                     <div className="font-medium text-white">{phone.label}</div>
-                    <a
-                      href={`tel:+${phone.digits}`}
-                      className="text-blue-400 hover:text-blue-300"
-                    >
-                      {phone.display}
-                    </a>
+                      <div className="flex items-center gap-2 text-gray-300">
+                        <Phone className="w-4 h-4 text-blue-400" />
+                        <a
+                          href={`tel:+${phone.digits}`}
+                          className="text-blue-400 hover:text-blue-300"
+                        >
+                          {phone.display}
+                        </a>
+                      </div>
+                                    
                     <div className="flex items-center gap-3">
                       <a
                         href={`https://t.me/+${phone.digits}`}

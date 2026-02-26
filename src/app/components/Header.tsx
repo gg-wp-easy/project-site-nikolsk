@@ -42,7 +42,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex gap-8">
+          <nav className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <Link key={item.path} to={item.path}>
                 <motion.div
@@ -67,6 +67,35 @@ export function Header() {
                 </motion.div>
               </Link>
             ))}
+            <div className="flex items-center gap-3 border-l border-gray-200 pl-4">
+              <span className="text-sm font-semibold text-gray-600">
+                {t('header.marketplaces')}
+              </span>
+              <a
+                href="https://www.wildberries.ru"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm font-semibold text-gray-800 hover:text-pink-600 transition-colors"
+              >
+                Wildberries
+              </a>
+              <a
+                href="https://www.ozon.ru"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm font-semibold text-gray-800 hover:text-blue-600 transition-colors"
+              >
+                Ozon
+              </a>
+              <a
+                href="https://market.yandex.ru"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm font-semibold text-gray-800 hover:text-yellow-600 transition-colors"
+              >
+                Yandex Market
+              </a>
+            </div>
           </nav>
 
           {/* CTA Button */}
@@ -116,6 +145,37 @@ export function Header() {
                 </div>
               </Link>
             ))}
+            <div className="mt-3 px-4">
+              <div className="text-sm font-semibold text-gray-600 mb-2">
+                {t('header.marketplaces')}
+              </div>
+              <div className="flex items-center gap-4">
+                <a
+                  href="https://www.wildberries.ru"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-base font-semibold text-gray-800 hover:text-pink-600 transition-colors"
+                >
+                  Wildberries
+                </a>
+                <a
+                  href="https://www.ozon.ru"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-base font-semibold text-gray-800 hover:text-blue-600 transition-colors"
+                >
+                  Ozon
+                </a>
+                <a
+                  href="https://market.yandex.ru"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-base font-semibold text-gray-800 hover:text-yellow-600 transition-colors"
+                >
+                  Yandex Market
+                </a>
+              </div>
+            </div>
             <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
               <button className="w-full mt-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg">
                 {t('header.connection')}
