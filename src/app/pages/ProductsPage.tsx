@@ -25,6 +25,8 @@ export const ProductsPage = (): JSX.Element => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingPage, setLoadingPage] = useState<boolean>(false);
+  // mirror state in a ref so that callbacks (observer) always see current value
+  const loadingPageRef = useRef<boolean>(false);
 
   const PAGE_SIZE = 6;
 
@@ -94,20 +96,40 @@ export const ProductsPage = (): JSX.Element => {
       return cacheRef.current[page];
     }
     setLoadingPage(true);
+    console.debug('loadPage start', page);
     const loaded: Product[] = [];
     const extensions = ['jpg', 'JPG', 'jpeg', 'png'];
-    while (loaded.length < PAGE_SIZE && !doneRef.current) {
-      const i = lastIndexRef.current;
-      if (i > 90) {
-        doneRef.current = true;
-        break;
+
+    /**
+     * Try to fetch HEAD and return:
+     *  - true    : resource exists (status 2xx)
+     *  - false   : resource definitely missing (status 404)
+     *  - null    : transient error (network / 5xx) so we can't make a decision
+     */
+    const checkImage = async (path: string): Promise<boolean | null> => {
+      try {
+        const res = await fetch(path, { method: 'HEAD' });
+        if (res.ok) return true;
+        if (res.status === 404) return false;
+        return null; // treat other statuses as unknown
+      } catch {
+        return null;
       }
-      let found = false;
-      for (const ext of extensions) {
-        const imagePath = `/images/image_${i}.${ext}`;
-        try {
-          const response = await fetch(imagePath, { method: 'HEAD' });
-          if (response.ok) {
+    };
+
+    try {
+      while (loaded.length < PAGE_SIZE && !doneRef.current) {
+        const i = lastIndexRef.current;
+        if (i > 90) {
+          doneRef.current = true;
+          break;
+        }
+        let found = false;
+        let networkIssue = false;
+        for (const ext of extensions) {
+          const imagePath = `/images/image_${i}.${ext}`;
+          const result = await checkImage(imagePath);
+          if (result === true) {
             found = true;
             loaded.push({
               id: i,
@@ -116,54 +138,92 @@ export const ProductsPage = (): JSX.Element => {
             });
             break;
           }
-        } catch {}
-      }
-      if (!found) {
-        if (i > 3) {
-          let misses = 0;
-          for (let j = i - 3; j < i; j++) {
-            let found_j = false;
-            for (const ext of extensions) {
-              try {
-                const resp = await fetch(`/images/image_${j}.${ext}`, { method: 'HEAD' });
-                if (resp.ok) {
+          if (result === null) {
+            networkIssue = true;
+          }
+        }
+        if (!found) {
+          if (networkIssue) {
+            // if we hit a transient error, don't count this index as a miss;
+            // simply advance and try again next iteration
+            lastIndexRef.current++;
+            continue;
+          }
+          if (i > 3) {
+            let misses = 0;
+            for (let j = i - 3; j < i; j++) {
+              let found_j = false;
+              let error_j = false;
+              for (const ext of extensions) {
+                const result = await checkImage(`/images/image_${j}.${ext}`);
+                if (result === true) {
                   found_j = true;
                   break;
                 }
-              } catch {}
+                if (result === null) {
+                  error_j = true;
+                  break;
+                }
+              }
+              if (!found_j && !error_j) misses++;
             }
-            if (!found_j) misses++;
-          }
-          if (misses >= 3) {
-            doneRef.current = true;
-            persistCache();
-            break;
+            if (misses >= 3) {
+              doneRef.current = true;
+              persistCache();
+              break;
+            }
           }
         }
+        lastIndexRef.current++;
       }
-      lastIndexRef.current++;
+      cacheRef.current[page] = loaded;
+      persistCache();
+      return loaded;
+    } catch (err) {
+      console.error('loadPage failed', err);
+      return [];
+    } finally {
+      setLoadingPage(false);
+      console.debug('loadPage end', page);
     }
-    cacheRef.current[page] = loaded;
-    persistCache();
-    setLoadingPage(false);
-    return loaded;
   };
 
-  const loadNextPage = async () => {
-    if (loadingPage || doneRef.current) return;
+  // keep loading state in ref so observer callback can check it without stale closure
+  useEffect(() => {
+    loadingPageRef.current = loadingPage;
+  }, [loadingPage]);
+
+  // helper that checks sentinel position and triggers another load if
+  // the sentinel is already in or above the viewport.
+  const checkSentinelAndLoad = () => {
+    requestAnimationFrame(() => {
+      const el = sentinelRef.current;
+      if (!el || doneRef.current || loadingPageRef.current) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= window.innerHeight + 200) {
+        loadNextPage();
+      }
+    });
+  };
+
+  const loadNextPage = React.useCallback(async () => {
+    if (loadingPageRef.current || doneRef.current) return;
     const page = nextPageRef.current;
     const newItems = await loadPage(page);
     if (newItems.length > 0) {
       setProducts((prev) => [...prev, ...newItems]);
       nextPageRef.current++;
     }
-  };
+
+    // sentinel might still be visible after adding items
+    checkSentinelAndLoad();
+  }, []);
 
   // intersection observer for infinite scroll
   useEffect(() => {
-    if (doneRef.current) return;
     const obs = new IntersectionObserver(
       (entries) => {
+        console.debug('intersection callback', entries[0].isIntersecting);
         if (entries[0].isIntersecting) {
           loadNextPage();
         }
@@ -171,15 +231,25 @@ export const ProductsPage = (): JSX.Element => {
       { rootMargin: '200px' }
     );
     const el = sentinelRef.current;
-    if (el) obs.observe(el);
+    if (el) {
+      obs.observe(el);
+      checkSentinelAndLoad();
+    }
     return () => {
       if (el) obs.unobserve(el);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadNextPage]);
+
+  // fallback: manual scroll listener that performs the same check
+  useEffect(() => {
+    const handler = () => checkSentinelAndLoad();
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
   }, []);
 
   // initial page load + restore cache
   useEffect(() => {
+    window.scrollTo(0, 0);
     const saved = sessionStorage.getItem('productsCache');
     if (saved) {
       try {
