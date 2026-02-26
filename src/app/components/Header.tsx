@@ -31,9 +31,9 @@ export function Header() {
               whileHover={{ scale: 1.05 }}
               className="flex items-center gap-2"
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                {/*<span className="text-white font-bold text-xl">G</span>*/}
-              </div>
+              {/*<div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">G</span>
+              </div>*/}
               <div>
                 {/*<div className="font-bold text-gray-900">GlassTech</div>*/}
                 <div className="text-xs text-gray-500">{t('header.nameFacture')}</div>

@@ -1,15 +1,24 @@
 import { motion } from "motion/react";
-import React, { useEffect, useState, useRef, JSX } from "react";
+import React, { JSX, useEffect, useMemo, useState } from "react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { CheckCircle, Shield, Sparkles, Layers, X } from "lucide-react";
+import { CheckCircle, Shield, Sparkles, Layers, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
+import {
+  getCategoryBySlug,
+  PRODUCT_CATEGORIES,
+  PRODUCT_IMAGE_CATEGORIES,
+  ProductCategorySlug,
+} from "../shared/productCategories";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import productManifest from "../shared/product-manifest.json";
 
-// Простые типы
 interface Product {
   id: number;
   title: string;
   image: string;
+  category: Exclude<ProductCategorySlug, "all">;
 }
 
 interface Advantage {
@@ -18,32 +27,39 @@ interface Advantage {
   description: string;
 }
 
+const PAGE_SIZE = 12;
+type ProductManifestItem = {
+  id: number;
+  src: string;
+  name: string;
+  path: string;
+  category: string;
+  filename: string;
+};
 
-// advantages array will be generated inside component to allow translation
+type ProductManifest = {
+  categories: Record<string, ProductManifestItem[]>;
+  all: ProductManifestItem[];
+};
+
+const manifest = productManifest as ProductManifest;
 
 export const ProductsPage = (): JSX.Element => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [loadingPage, setLoadingPage] = useState<boolean>(false);
-  // mirror state in a ref so that callbacks (observer) always see current value
-  const loadingPageRef = useRef<boolean>(false);
+  const { t } = useTranslation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const PAGE_SIZE = 6;
-
-  const cacheRef = useRef<Record<number, Product[]>>({});
-  const lastIndexRef = useRef<number>(1);
-  const doneRef = useRef<boolean>(false);
-  const nextPageRef = useRef<number>(1);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
-
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [modalSrc, setModalSrc] = useState<string | null>(null);
   const [modalLoading, setModalLoading] = useState<boolean>(false);
 
-  const { t } = useTranslation();
+  const activeCategory = useMemo(
+    () => getCategoryBySlug(searchParams.get("category")).slug,
+    [searchParams],
+  );
 
-  const fallbackText = t('image.notLoaded');
+  const fallbackText = t("image.notLoaded");
   const FALLBACK_IMAGE =
-    'data:image/svg+xml,' +
+    "data:image/svg+xml," +
     encodeURIComponent(`
       <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'>
         <rect width='100%' height='100%' fill='#f3f4f6'/>
@@ -56,236 +72,89 @@ export const ProductsPage = (): JSX.Element => {
   const advantages: Advantage[] = [
     {
       icon: Shield,
-      title: t('products.advantages.safety.title'),
-      description: t('products.advantages.safety.description'),
+      title: t("products.advantages.safety.title"),
+      description: t("products.advantages.safety.description"),
     },
     {
       icon: Sparkles,
-      title: t('products.advantages.quality.title'),
-      description: t('products.advantages.quality.description'),
+      title: t("products.advantages.quality.title"),
+      description: t("products.advantages.quality.description"),
     },
     {
       icon: Layers,
-      title: t('products.advantages.technology.title'),
-      description: t('products.advantages.technology.description'),
+      title: t("products.advantages.technology.title"),
+      description: t("products.advantages.technology.description"),
     },
     {
       icon: CheckCircle,
-      title: t('products.advantages.warranty.title'),
-      description: t('products.advantages.warranty.description'),
+      title: t("products.advantages.warranty.title"),
+      description: t("products.advantages.warranty.description"),
     },
   ];
 
-
-  // utilities for caching and incremental loading
-  const persistCache = () => {
-    try {
-      sessionStorage.setItem(
-        'productsCache',
-        JSON.stringify({
-          cache: cacheRef.current,
-          lastIndex: lastIndexRef.current,
-          done: doneRef.current,
-        })
-      );
-    } catch {}
-  };
-
-  const loadPage = async (page: number): Promise<Product[]> => {
-    if (cacheRef.current[page]) {
-      return cacheRef.current[page];
-    }
-    setLoadingPage(true);
-    console.debug('loadPage start', page);
-    const loaded: Product[] = [];
-    const extensions = ['jpg', 'JPG', 'jpeg', 'png'];
-
-    /**
-     * Try to fetch HEAD and return:
-     *  - true    : resource exists (status 2xx)
-     *  - false   : resource definitely missing (status 404)
-     *  - null    : transient error (network / 5xx) so we can't make a decision
-     */
-    const checkImage = async (path: string): Promise<boolean | null> => {
-      try {
-        const res = await fetch(path, { method: 'HEAD' });
-        if (res.ok) return true;
-        if (res.status === 404) return false;
-        return null; // treat other statuses as unknown
-      } catch {
-        return null;
-      }
-    };
-
-    try {
-      while (loaded.length < PAGE_SIZE && !doneRef.current) {
-        const i = lastIndexRef.current;
-        if (i > 90) {
-          doneRef.current = true;
-          break;
-        }
-        let found = false;
-        let networkIssue = false;
-        for (const ext of extensions) {
-          const imagePath = `/images/image_${i}.${ext}`;
-          const result = await checkImage(imagePath);
-          if (result === true) {
-            found = true;
-            loaded.push({
-              id: i,
-              title: t('products.dummyTitle', { id: i }),
-              image: imagePath,
-            });
-            break;
-          }
-          if (result === null) {
-            networkIssue = true;
-          }
-        }
-        if (!found) {
-          if (networkIssue) {
-            // if we hit a transient error, don't count this index as a miss;
-            // simply advance and try again next iteration
-            lastIndexRef.current++;
-            continue;
-          }
-          if (i > 3) {
-            let misses = 0;
-            for (let j = i - 3; j < i; j++) {
-              let found_j = false;
-              let error_j = false;
-              for (const ext of extensions) {
-                const result = await checkImage(`/images/image_${j}.${ext}`);
-                if (result === true) {
-                  found_j = true;
-                  break;
-                }
-                if (result === null) {
-                  error_j = true;
-                  break;
-                }
-              }
-              if (!found_j && !error_j) misses++;
-            }
-            if (misses >= 3) {
-              doneRef.current = true;
-              persistCache();
-              break;
-            }
-          }
-        }
-        lastIndexRef.current++;
-      }
-      cacheRef.current[page] = loaded;
-      persistCache();
-      return loaded;
-    } catch (err) {
-      console.error('loadPage failed', err);
-      return [];
-    } finally {
-      setLoadingPage(false);
-      console.debug('loadPage end', page);
-    }
-  };
-
-  // keep loading state in ref so observer callback can check it without stale closure
-  useEffect(() => {
-    loadingPageRef.current = loadingPage;
-  }, [loadingPage]);
-
-  // helper that checks sentinel position and triggers another load if
-  // the sentinel is already in or above the viewport.
-  const checkSentinelAndLoad = () => {
-    requestAnimationFrame(() => {
-      const el = sentinelRef.current;
-      if (!el || doneRef.current || loadingPageRef.current) return;
-      const rect = el.getBoundingClientRect();
-      if (rect.top <= window.innerHeight + 200) {
-        loadNextPage();
-      }
-    });
-  };
-
-  const loadNextPage = React.useCallback(async () => {
-    if (loadingPageRef.current || doneRef.current) return;
-    const page = nextPageRef.current;
-    const newItems = await loadPage(page);
-    if (newItems.length > 0) {
-      setProducts((prev) => [...prev, ...newItems]);
-      nextPageRef.current++;
-    }
-
-    // sentinel might still be visible after adding items
-    checkSentinelAndLoad();
-  }, []);
-
-  // intersection observer for infinite scroll
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        console.debug('intersection callback', entries[0].isIntersecting);
-        if (entries[0].isIntersecting) {
-          loadNextPage();
-        }
-      },
-      { rootMargin: '200px' }
-    );
-    const el = sentinelRef.current;
-    if (el) {
-      obs.observe(el);
-      checkSentinelAndLoad();
-    }
-    return () => {
-      if (el) obs.unobserve(el);
-    };
-  }, [loadNextPage]);
-
-  // fallback: manual scroll listener that performs the same check
-  useEffect(() => {
-    const handler = () => checkSentinelAndLoad();
-    window.addEventListener('scroll', handler, { passive: true });
-    return () => window.removeEventListener('scroll', handler);
-  }, []);
-
-  // initial page load + restore cache
   useEffect(() => {
     window.scrollTo(0, 0);
-    const saved = sessionStorage.getItem('productsCache');
-    if (saved) {
-      try {
-        const obj = JSON.parse(saved);
-        cacheRef.current = obj.cache || {};
-        lastIndexRef.current = obj.lastIndex || 1;
-        doneRef.current = obj.done || false;
-        const pages = Object.keys(cacheRef.current)
-          .map(Number)
-          .sort((a, b) => a - b);
-        const all: Product[] = [];
-        for (const p of pages) {
-          all.push(...(cacheRef.current[p] || []));
-        }
-        setProducts(all);
-        nextPageRef.current = pages.length + 1;
-      } catch {}
-    }
-    loadNextPage().then(() => setLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('products.loading')}</p>
-        </div>
-      </div>
-    );
-  }
+  const allProducts = useMemo(() => {
+    const loaded: Product[] = [];
+    let productId = 1;
+
+    for (const category of PRODUCT_IMAGE_CATEGORIES) {
+      if (!category.folder) continue;
+      const items = manifest.categories?.[category.folder] ?? [];
+
+      for (const item of items) {
+        loaded.push({
+          id: productId++,
+          title: t("products.dummyTitle", { id: item.id }),
+          image: item.src,
+          category: category.slug,
+        });
+      }
+    }
+
+    return loaded;
+  }, [t]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory]);
+
+  const filteredProducts = useMemo(() => {
+    if (activeCategory === "all") return allProducts;
+    return allProducts.filter((product) => product.category === activeCategory);
+  }, [activeCategory, allProducts]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE));
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return filteredProducts.slice(start, start + PAGE_SIZE);
+  }, [currentPage, filteredProducts]);
+
+  const changeCategory = (slug: ProductCategorySlug) => {
+    const next = new URLSearchParams(searchParams);
+    if (slug === "all") {
+      next.delete("category");
+    } else {
+      next.set("category", slug);
+    }
+    setSearchParams(next);
+  };
+
+  const currentCategoryLabel = t(getCategoryBySlug(activeCategory).labelKey, {
+    defaultValue: getCategoryBySlug(activeCategory).fallbackLabel,
+  });
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,.1)_50%,transparent_75%,transparent_100%)] bg-[length:50px_50px]" />
@@ -297,83 +166,122 @@ export const ProductsPage = (): JSX.Element => {
             transition={{ duration: 0.6 }}
             className="text-5xl md:text-6xl font-bold text-white mb-6"
           >
-            {t('products.title')}
+            {t("products.title")}
           </motion.h1>
+          <p className="text-lg text-blue-100">
+            {t("products.currentCategory", {
+              defaultValue: "Категория: {{category}}",
+              category: currentCategoryLabel,
+            })}
+          </p>
         </div>
       </section>
 
-      {/* Products Grid */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                whileHover={{ y: -10 }}
-                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group"
-              >
-                <div className="relative h-64 overflow-hidden bg-gray-100">
-                  <ImageWithFallback
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
-                    fallbackSrc={FALLBACK_IMAGE}
-                  />
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    {product.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    {t('products.dummyDescription', { id: product.id })}
-                  </p>
-                  <button
-                    onClick={() => {
-                      setModalSrc(product.image);
-                      setModalLoading(true);
-                    }}
-                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold"
-                  >
-                    {t('products.detailsView')}
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-
-            {/* skeleton cards while loading more */}
-            {loadingPage && products.length > 0 &&
-              Array.from({ length: PAGE_SIZE }).map((_, i) => (
-                <div
-                  key={`skeleton-${i}`}
-                  className="bg-white rounded-xl overflow-hidden shadow-lg"
+          <div className="flex flex-wrap gap-3 mb-8">
+            {PRODUCT_CATEGORIES.map((category) => {
+              const isActive = category.slug === activeCategory;
+              return (
+                <button
+                  key={category.slug}
+                  onClick={() => changeCategory(category.slug)}
+                  className={`px-4 py-2 rounded-full border transition ${
+                    isActive
+                      ? "bg-blue-600 text-white border-blue-600"
+                      : "bg-white text-gray-700 border-gray-300 hover:border-blue-500 hover:text-blue-700"
+                  }`}
                 >
-                  <div className="relative h-64 bg-gray-200 animate-pulse" />
-                  <div className="p-6 space-y-4">
-                    <div className="h-6 bg-gray-200 w-3/4 animate-pulse" />
-                    <div className="h-4 bg-gray-200 w-full animate-pulse" />
-                    <div className="h-10 bg-gray-200 w-full animate-pulse" />
-                  </div>
-                </div>
-              ))}
+                  {t(category.labelKey, { defaultValue: category.fallbackLabel })}
+                </button>
+              );
+            })}
           </div>
+
+          {filteredProducts.length === 0 ? (
+            <p className="text-center text-gray-600 py-10">
+              {t("products.noItems", { defaultValue: "В этой категории пока нет товаров" })}
+            </p>
+          ) : (
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {paginatedProducts.map((product) => (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4 }}
+                    whileHover={{ y: -10 }}
+                    className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group"
+                  >
+                    <div className="relative h-64 overflow-hidden bg-gray-100">
+                      <ImageWithFallback
+                        src={product.image}
+                        alt={product.title}
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                        fallbackSrc={FALLBACK_IMAGE}
+                      />
+                    </div>
+
+                    <div className="p-6">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                        {product.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4">
+                        {t("products.dummyDescription", { id: product.id })}
+                      </p>
+                      <button
+                        onClick={() => {
+                          setModalSrc(product.image);
+                          setModalLoading(true);
+                        }}
+                        className="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold"
+                      >
+                        {t("products.detailsView")}
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="flex items-center justify-center gap-2 mt-10 flex-wrap">
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-2 rounded-lg border border-gray-300 bg-white disabled:opacity-40"
+                  aria-label={t("products.prevPage", { defaultValue: "Предыдущая страница" })}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`min-w-10 h-10 px-3 rounded-lg border ${
+                      page === currentPage
+                        ? "bg-blue-600 text-white border-blue-600"
+                        : "bg-white text-gray-700 border-gray-300"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-2 rounded-lg border border-gray-300 bg-white disabled:opacity-40"
+                  aria-label={t("products.nextPage", { defaultValue: "Следующая страница" })}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
-      {/* infinite scroll sentinel */}
-      <div ref={sentinelRef} className="h-1" />
-
-      {/* no more items indicator */}
-      {doneRef.current && !loadingPage && (
-        <p className="text-center text-gray-500 py-4">
-          {t('products.noMore') || 'No more products'}
-        </p>
-      )}
-
-      {/* modal overlay */}
       {modalSrc && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300"
@@ -381,34 +289,33 @@ export const ProductsPage = (): JSX.Element => {
         >
           <div className="relative">
             <button
-              onClick={(e) => { e.stopPropagation(); setModalSrc(null); }}
-              aria-label={t('products.closeImage')}
+              onClick={(e) => {
+                e.stopPropagation();
+                setModalSrc(null);
+              }}
+              aria-label={t("products.closeImage")}
               className="absolute top-2 right-2 text-white p-1 rounded-full bg-black bg-opacity-50 hover:bg-opacity-75 transition"
             >
               <X className="w-6 h-6" />
             </button>
-            {modalLoading && (
-              <div className="w-1/2 h-1/2 bg-gray-200 animate-pulse" />
-            )}
+            {modalLoading && <div className="w-1/2 h-1/2 bg-gray-200 animate-pulse" />}
             <div className="max-w-[100vw] max-h-[100vh]">
               <ImageWithFallback
                 src={modalSrc}
                 alt=""
-                className={`w-full h-full object-contain ${modalLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}
+                className={`w-full h-full object-contain ${
+                  modalLoading ? "opacity-0" : "opacity-100"
+                } transition-opacity duration-500`}
                 fallbackSrc={FALLBACK_IMAGE}
                 onClick={(e) => e.stopPropagation()}
                 onLoad={() => setModalLoading(false)}
-                onError={() => {
-                  setModalLoading(false);
-                  //console.log('modal image error');
-                }}
+                onError={() => setModalLoading(false)}
               />
             </div>
           </div>
         </div>
       )}
 
-      {/* Advantages Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -417,12 +324,8 @@ export const ProductsPage = (): JSX.Element => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              {t('features.title')}
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              {t('features.subtitle')}
-            </p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{t("features.title")}</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">{t("features.subtitle")}</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -441,9 +344,7 @@ export const ProductsPage = (): JSX.Element => {
                 >
                   <advantage.icon className="w-8 h-8 text-white" />
                 </motion.div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {advantage.title}
-                </h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">{advantage.title}</h3>
                 <p className="text-gray-600">{advantage.description}</p>
               </motion.div>
             ))}
@@ -451,7 +352,6 @@ export const ProductsPage = (): JSX.Element => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-cyan-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
@@ -459,21 +359,15 @@ export const ProductsPage = (): JSX.Element => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-white mb-6">
-              {t('cta.title')}
-            </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              {t('cta.description')}
-            </p>
+            <h2 className="text-4xl font-bold text-white mb-6">{t("cta.title")}</h2>
+            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">{t("cta.description")}</p>
             <Link to="/contact">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-10 py-4 bg-white text-blue-600 rounded-lg text-lg font-semibold shadow-xl"
               >
-                
-              
-                {t('cta.button')}
+                {t("cta.button")}
               </motion.button>
             </Link>
           </motion.div>

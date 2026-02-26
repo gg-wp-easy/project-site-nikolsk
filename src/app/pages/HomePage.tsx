@@ -5,16 +5,17 @@ import { GlassAnimation } from "../components/animations/GlassAnimation";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
+import { PRODUCT_CATEGORIES, PRODUCT_IMAGE_CATEGORIES } from "../shared/productCategories";
 
 export function HomePage() {
   const { t } = useTranslation();
 
   const features = [
-    {
+    /*{
       icon: Award,
       title: t('features.quality.title'),
       description: t('features.quality.description'),
-    },
+    },*/
     {
       icon: Sparkles,
       title: t('features.innovation.title'),
@@ -32,20 +33,11 @@ export function HomePage() {
     },
   ];
 
-  const classProducts = [
-              {
-                title: t('classProducts.colbs'),
-                image: "/images/image_2.JPG",
-              },
-              {
-                title: t('classProducts.glassDecorate'),
-                image: "/images/image_60.jpeg",
-              },
-              {
-                title: t('classProducts.different'),
-                image: "/images/image_90.jpeg",
-              },
-            ];
+  const categoryLinks = PRODUCT_CATEGORIES.map((category) => ({
+    slug: category.slug,
+    title: t(category.labelKey, { defaultValue: category.fallbackLabel }),
+    to: category.slug === "all" ? "/products" : `/products?category=${category.slug}`,
+  }));
   return (
     <div>
       {/* Hero Section */}
@@ -144,7 +136,7 @@ export function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4" >
               {t('features.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -193,10 +185,22 @@ export function HomePage() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {classProducts.map((product, index) => (
+          <div className="flex flex-wrap justify-center gap-3 mb-10">
+            {categoryLinks.map((category) => (
+              <Link
+                key={`category-link-${category.slug}`}
+                to={category.to}
+                className="px-4 py-2 rounded-full border border-gray-300 text-gray-700 hover:border-blue-500 hover:text-blue-700 transition"
+              >
+                {category.title}
+              </Link>
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {PRODUCT_IMAGE_CATEGORIES.map((category, index) => (
               <motion.div
-                key={product.title}
+                key={category.slug}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -206,21 +210,21 @@ export function HomePage() {
               >
                 <div className="relative overflow-hidden rounded-xl shadow-lg mb-4 h-80">
                   <ImageWithFallback
-                    src={product.image}
-                    alt={product.title}
+                    src={category.previewImage}
+                    alt={t(category.labelKey, { defaultValue: category.fallbackLabel })}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <h3 className="text-2xl font-bold text-white mb-2">
-                      {product.title}
+                      {t(category.labelKey, { defaultValue: category.fallbackLabel })}
                     </h3>
                     <motion.div
                       initial={{ opacity: 0, x: -10 }}
                       whileHover={{ opacity: 1, x: 0 }}
                       className="text-white"
                     >
-                      <Link to="/products" className="flex items-center gap-2">
+                      <Link to={`/products?category=${category.slug}`} className="flex items-center gap-2">
                         <span>{t('products.details')}</span>
                         <ArrowRight className="w-4 h-4" />
                       </Link>

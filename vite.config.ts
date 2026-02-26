@@ -10,6 +10,18 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    host: true, // Разрешить доступ с любого хоста
+    allowedHosts: [
+      '.ngrok-free.dev',
+      '.ngrok-free.app', // Разрешить все поддомены ngrok-free.app
+      '.ngrok.io',       // Для старых версий ngrok
+      '.ngrok.dev',       // Альтернативный домен
+      'unlacquered-oma-histomorphologically.ngrok-free.dev',
+    ],
+    // Или полностью отключить проверку (менее безопасно)
+    // allowedHosts: 'all'
+  },
   resolve: {
     alias: {
       // Alias @ to the src directory

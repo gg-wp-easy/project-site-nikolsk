@@ -9,11 +9,17 @@ const __dirname = path.dirname(__filename);
 const imagesDir = path.join(__dirname, '../public/images');
 const outputDir = path.join(__dirname, '../src/shared');
 const outputFile = path.join(outputDir, 'image-manifest.json');
+const appSharedDir = path.join(__dirname, '../src/app/shared');
+const productManifestFile = path.join(appSharedDir, 'product-manifest.json');
 
-// СОЗДАЕМ ПАПКУ shared, если её нет
+// СОЗДАЕМ ПАПКИ output, если их нет
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
   console.log(`📁 Created directory: ${outputDir}`);
+}
+if (!fs.existsSync(appSharedDir)) {
+  fs.mkdirSync(appSharedDir, { recursive: true });
+  console.log(`📁 Created directory: ${appSharedDir}`);
 }
 
 // Проверяем, существует ли папка с изображениями
@@ -21,42 +27,70 @@ if (!fs.existsSync(imagesDir)) {
   console.warn(`⚠️ Warning: Images directory does not exist: ${imagesDir}`);
   console.log('📁 Creating empty manifest...');
   
-  // Создаем пустой манифест
+  // Создаем пустые манифесты
   fs.writeFileSync(outputFile, JSON.stringify([], null, 2));
+  fs.writeFileSync(
+    productManifestFile,
+    JSON.stringify({ categories: {}, all: [] }, null, 2)
+  );
   console.log(`✅ Created empty manifest at: ${outputFile}`);
+  console.log(`✅ Created empty product manifest at: ${productManifestFile}`);
   process.exit(0);
 }
 
-// Читаем все файлы в папке
-const files = fs.readdirSync(imagesDir);
-console.log(`📁 Found ${files.length} files in ${imagesDir}`);
+// Читаем подпапки категорий
+const entries = fs.readdirSync(imagesDir, { withFileTypes: true });
+const categoryDirs = entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
 
-// Фильтруем только изображения
-const imageFiles = files.filter(file => 
-  /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
-);
+console.log(`📁 Found ${categoryDirs.length} category folders in ${imagesDir}`);
 
-console.log(`🖼️ Found ${imageFiles.length} image files`);
+const allImages = [];
+const categories = {};
 
-// Сортируем файлы по имени (числовая сортировка)
-imageFiles.sort((a, b) => {
-  const aNum = parseInt(a.match(/\d+/)?.[0] || '0');
-  const bNum = parseInt(b.match(/\d+/)?.[0] || '0');
+const sortByNumber = (a, b) => {
+  const aNum = parseInt(a.match(/\d+/)?.[0] || '0', 10);
+  const bNum = parseInt(b.match(/\d+/)?.[0] || '0', 10);
   return aNum - bNum;
-});
+};
 
-// Создаем манифест
-const manifest = imageFiles.map((file, index) => ({
+for (const category of categoryDirs) {
+  const categoryPath = path.join(imagesDir, category);
+  const files = fs.readdirSync(categoryPath);
+  const imageFiles = files.filter((file) =>
+    /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
+  );
+
+  imageFiles.sort(sortByNumber);
+
+  categories[category] = imageFiles.map((file, index) => ({
+    id: index + 1,
+    src: `/images/${category}/${file}`,
+    name: file.replace(/\.[^/.]+$/, ""),
+    path: `/images/${category}/${file}`,
+    category,
+    filename: file,
+  }));
+
+  for (const item of categories[category]) {
+    allImages.push(item);
+  }
+}
+
+// Сохраняем плоский манифест для обратной совместимости
+const flatManifest = allImages.map((item, index) => ({
   id: index + 1,
-  src: `/images/${file}`,
-  name: file.replace(/\.[^/.]+$/, ""),
-  path: `/images/${file}`
+  src: item.src,
+  name: item.name,
+  path: item.path,
 }));
 
-// Сохраняем в JSON
-fs.writeFileSync(outputFile, JSON.stringify(manifest, null, 2));
+fs.writeFileSync(outputFile, JSON.stringify(flatManifest, null, 2));
 
-console.log(`✅ Generated manifest with ${manifest.length} images at: ${outputFile}`);
-if (manifest.length > 0) {
-  console.log('📋 First 3 images:', manifest.slice(0, 3));
-}
+// Сохраняем манифест по категориям
+fs.writeFileSync(
+  productManifestFile,
+  JSON.stringify({ categories, all: allImages }, null, 2)
+);
+
+console.log(`✅ Generated manifest with ${flatManifest.length} images at: ${outputFile}`);
+console.log(`✅ Generated product manifest at: ${productManifestFile}`);

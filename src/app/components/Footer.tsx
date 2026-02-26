@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { motion } from "motion/react";
 import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { PRODUCT_CATEGORIES } from "../shared/productCategories";
 
 export function Footer() {
   const { t } = useTranslation();
@@ -12,12 +13,12 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
+            {/*<div className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl"></span>
               </div>
               <span className="font-bold text-white">{t('footer.boldTitle')}</span>
-            </div>
+            </div>*/}
             <p className="text-sm mb-4">
               {t('footer.description')}
             </p>
@@ -70,9 +71,18 @@ export function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">{t('links.products')}</h3>
             <ul className="space-y-2 text-sm">
-              <li className="hover:text-blue-400 transition-colors cursor-pointer">{t('classProducts.colbs')}</li>
-              <li className="hover:text-blue-400 transition-colors cursor-pointer">{t('classProducts.glassDecorate')}</li>
-              <li className="hover:text-blue-400 transition-colors cursor-pointer">{t('classProducts.different')}</li>
+              {PRODUCT_CATEGORIES.map((category) => (
+                <li key={`footer-category-${category.slug}`}>
+                  <Link to={category.slug === "all" ? "/products" : `/products?category=${category.slug}`}>
+                    <motion.span
+                      whileHover={{ x: 5 }}
+                      className="text-sm hover:text-blue-400 transition-colors inline-block"
+                    >
+                      {t(category.labelKey, { defaultValue: category.fallbackLabel })}
+                    </motion.span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
