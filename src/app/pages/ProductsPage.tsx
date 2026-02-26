@@ -390,7 +390,7 @@ export const ProductsPage = (): JSX.Element => {
             {modalLoading && (
               <div className="w-1/2 h-1/2 bg-gray-200 animate-pulse" />
             )}
-            <div className="max-w-[90vw] max-h-[90vh]">
+            <div className="max-w-[100vw] max-h-[100vh]">
               <ImageWithFallback
                 src={modalSrc}
                 alt=""

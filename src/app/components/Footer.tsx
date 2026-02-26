@@ -27,21 +27,18 @@ export function Footer() {
                 href="#"
                 className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
               >
-                <Facebook className="w-4 h-4" />
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.1, y: -2 }}
                 href="#"
                 className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
               >
-                <Instagram className="w-4 h-4" />
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.1, y: -2 }}
                 href="#"
                 className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
               >
-                <Linkedin className="w-4 h-4" />
               </motion.a>
             </div>
           </div>

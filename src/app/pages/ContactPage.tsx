@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-
 export function ContactPage() {
   const { t } = useTranslation();
 
@@ -33,8 +32,6 @@ export function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
-    company: "",
     message: "",
   });
 
@@ -44,27 +41,41 @@ export function ContactPage() {
   const faqListRaw = t('faq', { returnObjects: true });
   const faqList = Array.isArray(faqListRaw) ? faqListRaw : [];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const { name, email, phone, company, message } = formData;
+    const { name, email, message } = formData;
 
-    // prepare mailto link
-    const subject = encodeURIComponent(t('contact.form.submit'));
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCompany: ${company}\nMessage:\n${message}`
-    );
-    window.location.href = `mailto:kaevnikita@yandex.ru?subject=${subject}&body=${body}`;
+    // TODO: replace with your own email-sending service or backend endpoint.
+    // Example using Formspree (https://formspree.io):
+    //   1. create a form there and copy the form ID (f/xxxxxxx)
+    //   2. replace the URL below with `https://formspree.io/f/yourId`
+    //   3. you can also proxy through your own API at `/api/send-email`.
+    try {
+      const resp = await fetch('https://formsubmit.co/email', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+        }),
+      });
 
-    // still show thank you banner
-    setIsSubmitting(false);
-    setSubmitted(true);
-    setFormData({ name: "", email: "", phone: "", company: "", message: "" });
+      if (!resp.ok) {
+        throw new Error('network error');
+      }
 
-    setTimeout(() => {
-      setSubmitted(false);
-    }, 5000);
+      setSubmitted(true);
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (err) {
+      console.error('submission error', err);
+      // optionally show error to user
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -198,20 +209,6 @@ export function ContactPage() {
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                       placeholder={t('contact.form.placeholders.email')}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {t('contact.form.fields.phone')}
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                      placeholder={t('contact.form.placeholders.phone')}
                     />
                   </div>
                 </div>

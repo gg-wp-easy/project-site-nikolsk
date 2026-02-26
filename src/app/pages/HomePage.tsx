@@ -7,14 +7,7 @@ import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 
 export function HomePage() {
-   const { t } = useTranslation();
-
-  /*const stats = [
-    { value: "25+", label: t('stats.years') },
-    { value: "500+", label: t('stats.projects') },
-    { value: "100%", label: t('stats.quality') },
-    { value: "50+", label: t('stats.employees') },
-  ];*/
+  const { t } = useTranslation();
 
   const features = [
     {
@@ -95,7 +88,7 @@ export function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex flex-col gap-4 justify-center items-center sm:flex-row sm:justify-center"
           >
             <Link to="/products">
               <motion.button
@@ -225,9 +218,9 @@ export function HomePage() {
                     <motion.div
                       initial={{ opacity: 0, x: -10 }}
                       whileHover={{ opacity: 1, x: 0 }}
-                      className="flex items-center gap-2 text-white"
+                      className="text-white"
                     >
-                      <Link to="/products">
+                      <Link to="/products" className="flex items-center gap-2">
                         <span>{t('products.details')}</span>
                         <ArrowRight className="w-4 h-4" />
                       </Link>
