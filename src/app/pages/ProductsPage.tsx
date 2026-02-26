@@ -330,7 +330,7 @@ export const ProductsPage = (): JSX.Element => {
                 onLoad={() => setModalLoading(false)}
                 onError={() => {
                   setModalLoading(false);
-                  console.log('modal image error');
+                  //console.log('modal image error');
                 }}
               />
             </div>
