@@ -193,14 +193,6 @@
       "image_64.jpeg": {
         "title": "Рассеиватель Линза",
         "description": "Цвет: Прозрачный\n Вес: 980гр\nВысота:38мм\nШирина: 165мм\n"
-      },
-      "image_65.jpeg": {
-        "title": "Рассеиватель сфера",
-        "description": "Цвет: Прозрачный\n Вес: 1300гр\nВысота: 94мм\nШирина: 247мм\n"
-      },
-      "image_90.jpeg": {
-        "title": "Рассеиватель призма",
-        "description": "Цвет: Прозрачная\n Вес: 850гр\nВысота: 74мм\nШирина: 210мм\n"
       }
     },
     "dishes": {
@@ -232,35 +224,23 @@
         "title": "Тарелка Луна",
         "description": "Цвет: Прозрачный \nВес: 990гр\nВысота: 78мм\nШирина: 395мм"
       },
-      "image_100.jpeg": {
-        "title": "Новинка\nСалатник \"Кристалл\"",
+      "image_100.jpg": {
+        "title": "Салатник \"Кристалл\"",
         "description": "Цвет: Прозрачная\nВес:480гр\nВысота:65мм\nШирина:175мм"
       },
-      "image_101.jpeg": {
-        "title": "Новинка\nСалатник \"Кристалл-2\"",
+      "image_101.jpg": {
+        "title": "Салатник \"Кристалл-2\"",
         "description": "Цвет: Прозрачный\nВес: 740гр\nВысота: 77мм\nШирина:210мм"
+      },
+      "image_114.jpg": {
+        "title": "Салатник \"Кристалл\"",
+        "description": "Цвет: Белый\nВес:480гр\nВысота:65мм\nШирина:175мм"
       }
     },
     "empties": {
       "image_53.jpeg": {
-        "title": "",
-        "description": ""
-      },
-      "image_76.jpeg": {
-        "title": "Изделие - 000",
-        "description": "Цвет: Темно-зеленый \nВес: 500гр\nВысота: 104мм\nШирина: 114мм"
-      },
-      "image_77.jpeg": {
-        "title": "Изделие - 000",
-        "description": "Цвет: Черный \nВес: 500гр\nВысота: 104мм\nШирина: 114мм"
-      },
-      "image_78.jpeg": {
-        "title": "Изделие - 000",
-        "description": "Цвет: Прозрачный \nВес: 500гр\nВысота: 104мм\nШирина: 114мм"
-      },
-      "image_82.jpeg": {
-        "title": "",
-        "description": ""
+        "title": "Банка с гидрозатвором",
+        "description": "Диаметр: 163мм\nГорло:5л"
       },
       "image_84.jpeg": {
         "title": "Бутыль 5л",
@@ -272,11 +252,11 @@
       },
       "image_113.JPG": {
         "title": "Банка с гидрозатвором",
-        "description": "Горло: 163мм\nГорло:18л"
+        "description": "Диаметр: 163мм\nГорло:18л"
       },
       "image_114.JPG": {
         "title": "Банка с гидрозатвором",
-        "description": "Горло: 163мм\nГорло:15л"
+        "description": "Диаметр: 163мм\nГорло:15л"
       },
       "image_115.JPG": {
         "title": "Бутыль с лозой 5л",
@@ -284,62 +264,66 @@
       }
     },
     "lampshades": {
-      "image_39.JPG": {
-        "title": "",
-        "description": ""
-      },
-      "image_63.jpeg": {
-        "title": "",
+      "image_80.jpeg": {
+        "title": "Плафон 010",
         "description": ""
       },
       "image_66.jpeg": {
-        "title": "",
-        "description": ""
-      },
-      "image_67.jpeg": {
-        "title": "",
+        "title": "Плафон 005",
         "description": ""
       },
       "image_68.jpeg": {
-        "title": "",
+        "title": "Плафон 002",
+        "description": ""
+      },
+      "image_39.JPG": {
+        "title": "Плафон 001",
+        "description": ""
+      },
+      "image_63.jpeg": {
+        "title": "Плафон 004",
+        "description": ""
+      },
+      "image_67.jpeg": {
+        "title": "Плафон 006",
         "description": ""
       },
       "image_69.jpeg": {
-        "title": "",
+        "title": "Плафон 007",
         "description": ""
       },
       "image_70.jpeg": {
-        "title": "",
+        "title": "Плафон 008",
         "description": ""
       },
       "image_71.jpeg": {
-        "title": "",
+        "title": "Плафон 009",
         "description": ""
       },
-      "image_80.jpeg": {
-        "title": "",
+      "image_40.JPG": {
+        "title": "Плафон 002",
+        "description": ""
+      },
+      "image_41.JPG": {
+        "title": "Плафон 003",
+        "description": ""
+      },
+      "image_85.jpeg": {
+        "title": "Плафон 011",
         "description": ""
       }
     },
     "other": {
       "image_58.jpeg": {
-        "title": "",
-        "description": ""
+        "title": "Яйцо",
+        "description": "Расписное изделие"
       },
       "image_59.jpeg": {
-        "title": "",
-        "description": ""
+        "title": "Лампада - 001",
+        "description": "Цвет: прозрачный"
       },
       "image_60.jpeg": {
-        "title": "",
-        "description": ""
-      },
-      "image_64.jpeg": {
-        "title": "",
-        "description": ""
-      },
-      "image_85.jpeg": {
-        "title": "",
+        "title": "Лампада - 002",
         "description": ""
       },
       "image_102.jpg": {
@@ -368,14 +352,6 @@
         "title": "Ваза Арбуз ",
         "description": "Цвет: Черный дым\nВес: 1400гр\nВысота:195мм\nШирина: 190мм"
       },
-      "image_40.JPG": {
-        "title": "",
-        "description": ""
-      },
-      "image_41.JPG": {
-        "title": "",
-        "description": ""
-      },
       "image_42.JPG": {
         "title": "Ваза Кристалл",
         "description": "Цвет: Черный \nВес:970гр\nВысота: 288мм\nШирина: 125мм"
@@ -389,8 +365,8 @@
         "description": "Цвет: Синий\nВес:800гр\nВысота: 190мм\nШирина: 145мм"
       },
       "image_45.JPG": {
-        "title": "Ваза- 005",
-        "description": "Цвет: Белый \nВес: 850гр\nВысота: 180мм\nШирина: 100мм"
+        "title": "Ваза- 001",
+        "description": "Цвет: Белый \nВес: 790гр\nВысота: 120мм\nШирина: 110мм"
       },
       "image_46.JPG": {
         "title": "Ваза - 004",
@@ -401,40 +377,56 @@
         "description": "Цвет: Черный дым \nВес:800гр\nВысота: 190мм\nШирина: 145мм"
       },
       "image_48.JPG": {
-        "title": "",
-        "description": ""
+        "title": "Ваза- 002",
+        "description": "Вес: 1000гр\nВысота: 230мм\nШирина: 130мм"
       },
       "image_49.JPG": {
         "title": "Ваза Кристалл",
         "description": "Цвет: Синий \nВес:970гр\nВысота: 288мм\nШирина: 125мм"
       },
       "image_50.JPG": {
-        "title": "Ваза - 004",
+        "title": "Ваза - 005",
         "description": "Цвет: Черный дым\nВес:800гр\nВысота: 190мм\nШирина: 145мм"
       },
       "image_51.JPG": {
-        "title": "Ваза - 004",
+        "title": "Ваза - 005",
         "description": "Цвет: Белый \nВес:800гр\nВысота: 190мм\nШирина: 145мм"
       },
       "image_73.jpeg": {
-        "title": "",
-        "description": ""
+        "title": "Ваза Кристалл",
+        "description": "Цвет: Желто-черный \nВес:970гр\nВысота: 288мм\nШирина: 125мм"
       },
       "image_74.jpeg": {
         "title": "Ваза Кристалл",
-        "description": "Цвет: синий \nВес:970гр\nВысота: 288мм\nШирина: 125мм"
+        "description": "Цвет: Синий \nВес:970гр\nВысота: 288мм\nШирина: 125мм"
+      },
+      "image_76.jpeg": {
+        "title": "Ваза - 000",
+        "description": "Цвет: Темно-зеленый \nВес: 500гр\nВысота: 104мм\nШирина: 114мм"
+      },
+      "image_77.jpeg": {
+        "title": "Ваза - 000",
+        "description": "Цвет: Черный \nВес: 500гр\nВысота: 104мм\nШирина: 114мм"
+      },
+      "image_78.jpeg": {
+        "title": "Ваза - 000",
+        "description": "Цвет: Прозрачный \nВес: 500гр\nВысота: 104мм\nШирина: 114мм"
+      },
+      "image_82.jpeg": {
+        "title": "Ваза - 005",
+        "description": "Цвет: Прозрачный\nВес:800гр\nВысота: 190мм\nШирина: 145мм"
       },
       "image_83.jpeg": {
-        "title": "",
-        "description": ""
+        "title": "Ваза Кристалл",
+        "description": "Цвет: Прозрачный \nВес:970гр\nВысота: 288мм\nШирина: 125мм"
       },
       "image_89.jpeg": {
-        "title": "",
-        "description": ""
+        "title": "Ваза Кувшин",
+        "description": "Цвет: Розовый\nВес:800гр\nВысота: 190мм\nШирина: 145мм"
       },
       "image_112.jpeg": {
-        "title": "",
-        "description": ""
+        "title": "Ваза - 005",
+        "description": "Цвет: Белый \nВес:800гр\nВысота: 190мм\nШирина: 145мм"
       }
     }
   }

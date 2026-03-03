@@ -35,7 +35,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     folder: "diffusers",
     labelKey: "products.categories.diffusers",
     fallbackLabel: "Рассеиватели",
-    previewImage: "/images/diffusers/image_90.jpeg",
+    previewImage: "/images/diffusers/image_54.jpeg",
   },
   {
     slug: "dishes",
@@ -70,7 +70,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     folder: "other",
     labelKey: "products.categories.other",
     fallbackLabel: "Прочее",
-    previewImage: "/images/other/image_85.jpeg",
+    previewImage: "/images/other/image_58.jpeg",
   },
 ];
 
