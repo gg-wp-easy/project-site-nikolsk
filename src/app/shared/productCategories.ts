@@ -27,7 +27,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     slug: "colbs",
     folder: "colbs",
     labelKey: "products.categories.colbs",
-    fallbackLabel: "Колбы для кальянов",
+    fallbackLabel: "Колбы",
     previewImage: "/images/colbs/image_2.JPG",
   },
   {
