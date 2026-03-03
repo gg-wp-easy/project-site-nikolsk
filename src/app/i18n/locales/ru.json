@@ -45,6 +45,7 @@
     "decorative": "Декоративное стекло",
     "currentCategory": "Категория: {{category}}",
     "details": "Просмотреть",
+    "defaultTitle": "Стекольная продукция",
     "viewAll": "Смотреть все продукты",
     "dummyTitle": "Продукт {{id}}",
     "dummyDescription": "Описание продукта {{id}}",

@@ -51,7 +51,9 @@ export function HomePage() {
         </div>
 
         {/* Затемняющий оверлей для лучшей читаемости текста */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-950/70 via-transparent to-cyan-950/70" />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-950/70 via-transparent to-cyan-950/70 gradient-animate" />
+        <div className="floating-orb h-52 w-52 bg-cyan-300/30 top-20 left-12" />
+        <div className="floating-orb floating-orb-delay floating-orb-slow h-64 w-64 bg-blue-400/25 bottom-16 right-10" />
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
@@ -86,7 +88,7 @@ export function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg shadow-lg flex items-center gap-2 text-lg font-semibold backdrop-blur-sm"
+                className="btn-primary-soft px-8 py-4 text-lg"
               >
                 {t('hero.products')}
                 <ArrowRight className="w-5 h-5" />
@@ -96,7 +98,7 @@ export function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-white/10 backdrop-blur-md text-white border-2 border-white/30 rounded-lg text-lg font-semibold"
+                className="px-8 py-4 bg-white/10 backdrop-blur-md text-white border-2 border-white/30 rounded-lg text-lg font-semibold transition-all duration-300 hover:bg-white/20 hover:border-white/50"
               >
                 {t('hero.contact')}
               </motion.button>
@@ -128,7 +130,7 @@ export function HomePage() {
       </section>*/}
 
       {/* Features Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -152,12 +154,16 @@ export function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow"
+                whileHover={{ y: -7, rotate: -0.3 }}
+                className="surface-card surface-card-hover p-6"
               >
-                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center mb-4">
+                <motion.div
+                  whileHover={{ rotate: 6, scale: 1.08 }}
+                  transition={{ duration: 0.25 }}
+                  className="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center mb-4"
+                >
                   <feature.icon className="w-7 h-7 text-white" />
-                </div>
+                </motion.div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   {feature.title}
                 </h3>
@@ -190,7 +196,7 @@ export function HomePage() {
               <Link
                 key={`category-link-${category.slug}`}
                 to={category.to}
-                className="px-4 py-2 rounded-full border border-gray-300 text-gray-700 hover:border-blue-500 hover:text-blue-700 transition"
+                className="pill-filter bg-white/85 text-gray-700 border-slate-200 hover:border-sky-400 hover:text-sky-700"
               >
                 {category.title}
               </Link>
@@ -205,7 +211,7 @@ export function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
+                whileHover={{ y: -10, scale: 1.01 }}
                 className="group cursor-pointer"
               >
                 <div className="relative overflow-hidden rounded-xl shadow-lg mb-4 h-80">
@@ -245,7 +251,7 @@ export function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg shadow-md"
+                className="btn-primary-soft px-8 py-3"
               >
                 {t('products.viewAll')}
               </motion.button>

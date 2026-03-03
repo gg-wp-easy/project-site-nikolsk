@@ -90,8 +90,10 @@ export function AboutPage() {
             alt={t('about.hero.alt')}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-cyan-900/70" />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-cyan-900/70 gradient-animate" />
         </div>
+        <div className="floating-orb h-56 w-56 bg-cyan-300/25 top-10 left-10" />
+        <div className="floating-orb floating-orb-delay floating-orb-slow h-52 w-52 bg-blue-300/25 bottom-8 right-12" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
@@ -165,7 +167,7 @@ export function AboutPage() {
       </section>
 
       {/* Mission, Vision, Values */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -190,7 +192,7 @@ export function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ y: -10 }}
-                className="bg-white p-8 rounded-xl shadow-lg"
+                className="surface-card surface-card-hover p-8"
               >
                 <motion.div
                   whileHover={{ rotate: 360 }}
@@ -212,7 +214,7 @@ export function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -247,7 +249,7 @@ export function AboutPage() {
                   <div className={`flex-1 ${index % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
                     <motion.div
                       whileHover={{ scale: 1.05 }}
-                      className="bg-gray-50 p-6 rounded-xl shadow-md inline-block"
+                      className="surface-card p-6 inline-block"
                     >
                       <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent mb-2">
                         {milestone.year}
@@ -302,7 +304,7 @@ export function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -327,7 +329,7 @@ export function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ y: -10 }}
-                className="bg-white p-6 rounded-xl shadow-lg text-center"
+                className="surface-card surface-card-hover p-6 text-center"
               >
                 <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center">
                   <span className="text-3xl font-bold text-white">

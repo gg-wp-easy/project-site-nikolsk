@@ -17,22 +17,22 @@ export function ContactPage() {
       title: t('contact.cards.phone'),
       phones: [
         {
-          label: t('contact.phoneLabels.sales'),
+          //label: t('contact.phoneLabels.sales'),
           display: "+7 937 418 1818",
           digits: "79374181818",
         },
         {
-          label: t('contact.phoneLabels.production'),
+          //label: t('contact.phoneLabels.production'),
           display: "+7 927 288 6191",
           digits: "79272886191",
         },
       ],
     },
-    {
+    /*{
       icon: Mail,
       title: t('contact.cards.email'),
       details: ["info@glasstech.ru"],
-    },
+    },*/
     /*{
       icon: Clock,
       title: t('contact.cards.hours'),
@@ -101,10 +101,12 @@ export function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden">
+      <section className="relative py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden gradient-animate">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,.1)_50%,transparent_75%,transparent_100%)] bg-[length:50px_50px]" />
         </div>
+        <div className="floating-orb h-48 w-48 bg-cyan-300/25 top-8 left-6" />
+        <div className="floating-orb floating-orb-delay floating-orb-slow h-60 w-60 bg-blue-300/25 -bottom-20 right-4" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -126,9 +128,9 @@ export function ContactPage() {
       </section>
 
       {/* Contact Info Cards */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className="py-16 bg-transparent">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-6">
             {contactInfo.map((info, index) => (
               <motion.div
                 key={info.title}
@@ -136,8 +138,8 @@ export function ContactPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="bg-white p-6 rounded-xl shadow-lg"
+                whileHover={{ y: -6, scale: 1.01 }}
+                className="surface-card surface-card-hover p-6"
               >
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 5 }}
@@ -152,7 +154,9 @@ export function ContactPage() {
                   {"phones" in info && info.phones ? (
                     info.phones.map((phone) => (
                       <div key={phone.digits} className="text-sm text-gray-600">
-                        <div className="font-medium text-gray-900">{phone.label}</div>
+                        {"label" in phone && phone.label ? (
+                          <div className="font-medium text-gray-900">{phone.label}</div>
+                        ) : null}
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-2 text-gray-300">
                             <Phone className="w-4 h-4 text-blue-400" />
@@ -392,7 +396,7 @@ export function ContactPage() {
       </section>*/}
 
       {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-transparent">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -416,7 +420,8 @@ export function ContactPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white p-6 rounded-xl shadow-md"
+                whileHover={{ y: -4 }}
+                className="surface-card surface-card-hover p-6"
               >
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {faq.q}

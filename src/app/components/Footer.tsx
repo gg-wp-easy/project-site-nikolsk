@@ -8,7 +8,11 @@ export function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="relative overflow-hidden bg-slate-950 text-slate-300">
+      <div className="absolute inset-0 opacity-40 pointer-events-none">
+        <div className="absolute -top-16 -left-20 h-56 w-56 rounded-full bg-cyan-500/20 blur-3xl" />
+        <div className="absolute -bottom-16 -right-10 h-64 w-64 rounded-full bg-sky-500/20 blur-3xl" />
+      </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -19,10 +23,10 @@ export function Footer() {
               </div>
               <span className="font-bold text-white">{t('footer.boldTitle')}</span>
             </div>*/}
-            <p className="text-sm mb-4">
+            <p className="text-sm leading-relaxed mb-4">
               {t('footer.description')}
             </p>
-            <div className="text-sm font-semibold text-gray-200 mb-2">
+            <div className="footer-title-text mb-2">
               {t('footer.marketplaces')}
             </div>
             <div className="flex gap-4 text-base">
@@ -31,7 +35,7 @@ export function Footer() {
                 href="https://www.wildberries.ru"
                 target="_blank"
                 rel="noreferrer"
-                className="font-semibold text-gray-100 hover:text-pink-400 transition-colors"
+                className="footer-link-text text-gray-100 hover:text-pink-400 transition-colors"
               >
                 Wildberries
               </motion.a>
@@ -40,7 +44,7 @@ export function Footer() {
                 href="https://www.ozon.ru"
                 target="_blank"
                 rel="noreferrer"
-                className="font-semibold text-gray-100 hover:text-blue-400 transition-colors"
+                className="footer-link-text text-gray-100 hover:text-blue-400 transition-colors"
               >
                 Ozon
               </motion.a>
@@ -49,7 +53,7 @@ export function Footer() {
                 href="https://market.yandex.ru"
                 target="_blank"
                 rel="noreferrer"
-                className="font-semibold text-gray-100 hover:text-yellow-400 transition-colors"
+                className="footer-link-text text-gray-100 hover:text-yellow-400 transition-colors"
               >
                 Yandex Market
               </motion.a>
@@ -58,7 +62,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">{t('footer.navigationLabel')}</h3>
+            <h3 className="footer-title-text mb-4">{t('footer.navigationLabel')}</h3>
             <ul className="space-y-2">
               {[
                 { path: "/", label: t('links.home') },
@@ -69,7 +73,7 @@ export function Footer() {
                   <Link to={item.path}>
                     <motion.span
                       whileHover={{ x: 5 }}
-                      className="text-sm hover:text-blue-400 transition-colors inline-block"
+                      className="footer-link-text text-sm hover:text-blue-400 transition-colors inline-block"
                     >
                       {item.label}
                     </motion.span>
@@ -81,14 +85,14 @@ export function Footer() {
 
           {/* Products */}
           <div>
-            <h3 className="text-white font-semibold mb-4">{t('links.products')}</h3>
+            <h3 className="footer-title-text mb-4">{t('links.products')}</h3>
             <ul className="space-y-2 text-sm">
               {PRODUCT_CATEGORIES.map((category) => (
                 <li key={`footer-category-${category.slug}`}>
                   <Link to={category.slug === "all" ? "/products" : `/products?category=${category.slug}`}>
                     <motion.span
                       whileHover={{ x: 5 }}
-                      className="text-sm hover:text-blue-400 transition-colors inline-block"
+                      className="footer-link-text text-sm hover:text-blue-400 transition-colors inline-block"
                     >
                       {t(category.labelKey, { defaultValue: category.fallbackLabel })}
                     </motion.span>
@@ -100,28 +104,28 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-white font-semibold mb-4">{t('links.contact')}</h3>
+            <h3 className="footer-title-text mb-4">{t('links.contact')}</h3>
             <div className="space-y-4 text-sm">
               <div className="space-y-3">
                 {[
                   {
-                    label: t('contact.phoneLabels.sales'),
+                    //label: t('contact.phoneLabels.sales'),
                     display: "+7 937 418 1818",
                     digits: "79374181818",
                   },
                   {
-                    label: t('contact.phoneLabels.production'),
+                    //label: t('contact.phoneLabels.production'),
                     display: "+7 927 288 6191",
                     digits: "79272886191",
                   },
                 ].map((phone) => (
                   <div key={phone.digits} className="space-y-1">
-                    <div className="font-medium text-white">{phone.label}</div>
+                    <div className="footer-link-text font-medium text-white">{phone.label}</div>
                       <div className="flex items-center gap-2 text-gray-300">
                         <Phone className="w-4 h-4 text-blue-400" />
                         <a
                           href={`tel:+${phone.digits}`}
-                          className="text-blue-400 hover:text-blue-300"
+                          className="footer-link-text text-blue-400 hover:text-blue-300"
                         >
                           {phone.display}
                         </a>
@@ -132,7 +136,7 @@ export function Footer() {
                         href={`https://t.me/+${phone.digits}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300"
+                        className="footer-link-text inline-flex items-center gap-1 text-blue-400 hover:text-blue-300"
                       >
                         <svg
                           aria-hidden="true"
@@ -148,7 +152,7 @@ export function Footer() {
                         href={`https://wa.me/${phone.digits}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-green-400 hover:text-green-300"
+                        className="footer-link-text inline-flex items-center gap-1 text-green-400 hover:text-green-300"
                       >
                         <svg
                           aria-hidden="true"
@@ -164,17 +168,17 @@ export function Footer() {
                   </div>
                 ))}
               </div>
-              <div className="flex items-center gap-2 text-gray-300 pt-2">
+              {/*<div className="flex items-center gap-2 text-gray-300 pt-2">
                 <Mail className="w-4 h-4 text-blue-400" />
-                <a href="mailto:info@glasstech.ru" className="hover:text-blue-300">
+                <a href="mailto:info@glasstech.ru" className="footer-link-text hover:text-blue-300">
                   info@glasstech.ru
                 </a>
-              </div>
+              </div>*/}
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
+        <div className="border-t border-slate-800 mt-8 pt-8 text-sm text-center">
           <p>{t('footer.rights')}</p>
         </div>
       </div>

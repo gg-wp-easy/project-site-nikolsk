@@ -45,6 +45,7 @@
     "decorative": "Decorative glass",
     "currentCategory": "Category: {{category}}",
     "details": "View",
+    "defaultTitle": "Glass products",
     "viewAll": "View all products",
     "dummyTitle": "Product {{id}}",
     "dummyDescription": "Description of product {{id}}",

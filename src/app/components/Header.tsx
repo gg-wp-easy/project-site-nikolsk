@@ -21,7 +21,7 @@ export function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6 }}
-      className="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50"
+      className="sticky top-0 z-50 border-b border-white/70 bg-white/75 backdrop-blur-xl shadow-[0_8px_24px_rgba(15,23,42,0.08)]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
@@ -36,23 +36,23 @@ export function Header() {
               </div>*/}
               <div>
                 {/*<div className="font-bold text-gray-900">GlassTech</div>*/}
-                <div className="text-xs text-gray-500">{t('header.nameFacture')}</div>
+                <div className="nav-brand-text">{t('header.nameFacture')}</div>
               </div>
             </motion.div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6">
             {navItems.map((item) => (
               <Link key={item.path} to={item.path}>
                 <motion.div
                   whileHover={{ y: -2 }}
-                  className="relative py-2"
+                  className="relative py-2 px-3 rounded-full transition-colors hover:bg-slate-100/70"
                 >
                   <span
-                    className={`text-sm font-medium transition-colors ${
+                    className={`nav-link-text transition-colors ${
                       location.pathname === item.path
-                        ? "text-blue-600"
+                        ? "text-sky-700"
                         : "text-gray-600 hover:text-gray-900"
                     }`}
                   >
@@ -61,7 +61,7 @@ export function Header() {
                   {location.pathname === item.path && (
                     <motion.div
                       layoutId="underline"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"
+                      className="absolute bottom-0 left-3 right-3 h-0.5 bg-sky-600"
                     />
                   )}
                 </motion.div>
@@ -75,7 +75,7 @@ export function Header() {
                 href="https://www.wildberries.ru"
                 target="_blank"
                 rel="noreferrer"
-                className="text-sm font-semibold text-gray-800 hover:text-pink-600 transition-colors"
+                className="nav-link-text text-gray-800 hover:text-pink-600 transition-colors"
               >
                 Wildberries
               </a>
@@ -83,7 +83,7 @@ export function Header() {
                 href="https://www.ozon.ru"
                 target="_blank"
                 rel="noreferrer"
-                className="text-sm font-semibold text-gray-800 hover:text-blue-600 transition-colors"
+                className="nav-link-text text-gray-800 hover:text-blue-600 transition-colors"
               >
                 Ozon
               </a>
@@ -91,7 +91,7 @@ export function Header() {
                 href="https://market.yandex.ru"
                 target="_blank"
                 rel="noreferrer"
-                className="text-sm font-semibold text-gray-800 hover:text-yellow-600 transition-colors"
+                className="nav-link-text text-gray-800 hover:text-yellow-600 transition-colors"
               >
                 Yandex Market
               </a>
@@ -101,7 +101,7 @@ export function Header() {
           {/* CTA Button */}
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link to="/contact">
-              <button className="hidden md:block px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <button className="hidden md:block btn-primary-soft">
                 {t('header.connection')}
               </button>
             </Link>
@@ -110,7 +110,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2"
+            className="md:hidden p-2 rounded-lg hover:bg-slate-100/80 transition-colors"
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6 text-gray-900" />
@@ -135,10 +135,10 @@ export function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <div
-                  className={`py-3 px-4 rounded-lg mb-2 ${
+                  className={`py-3 px-4 rounded-xl mb-2 ${
                     location.pathname === item.path
-                      ? "bg-blue-50 text-blue-600"
-                      : "text-gray-600"
+                      ? "bg-sky-50 text-sky-700"
+                      : "text-gray-600 hover:bg-slate-100/80"
                   }`}
                 >
                   {item.label}
@@ -146,7 +146,7 @@ export function Header() {
               </Link>
             ))}
             <div className="mt-3 px-4">
-              <div className="text-sm font-semibold text-gray-600 mb-2">
+              <div className="nav-link-text text-gray-600 mb-2">
                 {t('header.marketplaces')}
               </div>
               <div className="flex items-center gap-4">
@@ -154,7 +154,7 @@ export function Header() {
                   href="https://www.wildberries.ru"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-base font-semibold text-gray-800 hover:text-pink-600 transition-colors"
+                  className="nav-link-text text-gray-800 hover:text-pink-600 transition-colors"
                 >
                   Wildberries
                 </a>
@@ -162,7 +162,7 @@ export function Header() {
                   href="https://www.ozon.ru"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-base font-semibold text-gray-800 hover:text-blue-600 transition-colors"
+                  className="nav-link-text text-gray-800 hover:text-blue-600 transition-colors"
                 >
                   Ozon
                 </a>
@@ -170,14 +170,14 @@ export function Header() {
                   href="https://market.yandex.ru"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-base font-semibold text-gray-800 hover:text-yellow-600 transition-colors"
+                  className="nav-link-text text-gray-800 hover:text-yellow-600 transition-colors"
                 >
                   Yandex Market
                 </a>
               </div>
             </div>
             <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
-              <button className="w-full mt-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg">
+              <button className="w-full mt-2 btn-primary-soft">
                 {t('header.connection')}
               </button>
             </Link>

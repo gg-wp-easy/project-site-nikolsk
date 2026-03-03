@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import React, { JSX, useEffect, useMemo, useState } from "react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { CheckCircle, Shield, Sparkles, Layers, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { CheckCircle, Shield, Sparkles, Layers, X, ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useSearchParams } from "react-router";
 import {
@@ -49,16 +49,22 @@ type ProductManifest = {
 const manifest = productManifest as ProductManifest;
 
 type ProductDataItem = {
-  filename: string;
   title: string;
   description: string;
 };
 
 type ProductsData = {
-  categories: Record<string, ProductDataItem[]>;
+  categories: Record<string, Record<string, ProductDataItem>>;
 };
 
 const productsCatalog = productsData as ProductsData;
+
+const splitDescriptionLines = (description: string): string[] =>
+  description
+    .replace(/\\n/g, "\n")
+    .split(/\r?\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
 
 export const ProductsPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -119,26 +125,22 @@ export const ProductsPage = (): JSX.Element => {
     for (const category of PRODUCT_IMAGE_CATEGORIES) {
       if (!category.folder) continue;
       const items = manifest.categories?.[category.folder] ?? [];
-      const catalogItems = productsCatalog.categories?.[category.folder] ?? [];
+      const catalogItems = productsCatalog.categories?.[category.folder] ?? {};
 
       for (const item of items) {
-        const meta = catalogItems.find((entry) => entry.filename === item.filename);
+        const meta = catalogItems[item.filename];
         loaded.push({
           id: productId++,
-          title: meta?.title?.trim()
-            ? meta.title
-            : t("products.dummyTitle", { id: item.id }),
+          title: meta?.title?.trim() ? meta.title : "",
           image: item.src,
           category: category.slug,
-          description: meta?.description?.trim()
-            ? meta.description
-            : t("products.dummyDescription", { id: item.id }),
+          description: meta?.description?.trim() ? meta.description : "",
         });
       }
     }
 
     return loaded;
-  }, [t]);
+  }, []);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -178,10 +180,12 @@ export const ProductsPage = (): JSX.Element => {
 
   return (
     <div className="min-h-screen">
-      <section className="relative py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden">
+      <section className="relative py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden gradient-animate">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,.1)_50%,transparent_75%,transparent_100%)] bg-[length:50px_50px]" />
         </div>
+        <div className="floating-orb h-48 w-48 bg-cyan-300/25 -top-12 left-8" />
+        <div className="floating-orb floating-orb-delay floating-orb-slow h-56 w-56 bg-blue-300/20 -bottom-16 right-10" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -200,7 +204,7 @@ export const ProductsPage = (): JSX.Element => {
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-3 mb-8">
             {PRODUCT_CATEGORIES.map((category) => {
@@ -209,10 +213,10 @@ export const ProductsPage = (): JSX.Element => {
                 <button
                   key={category.slug}
                   onClick={() => changeCategory(category.slug)}
-                  className={`px-4 py-2 rounded-full border transition ${
+                  className={`pill-filter ${
                     isActive
-                      ? "bg-blue-600 text-white border-blue-600"
-                      : "bg-white text-gray-700 border-gray-300 hover:border-blue-500 hover:text-blue-700"
+                      ? "bg-gradient-to-r from-sky-600 to-cyan-500 text-white border-transparent shadow-[0_10px_20px_rgba(2,132,199,0.3)]"
+                      : "bg-white/85 text-gray-700 border-slate-200 hover:border-sky-400 hover:text-sky-700"
                   }`}
                 >
                   {t(category.labelKey, { defaultValue: category.fallbackLabel })}
@@ -228,50 +232,78 @@ export const ProductsPage = (): JSX.Element => {
           ) : (
             <>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {paginatedProducts.map((product) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                    whileHover={{ y: -10 }}
-                    className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group"
-                  >
-                    <div className="relative h-64 overflow-hidden bg-gray-100">
-                      <ImageWithFallback
-                        src={product.image}
-                        alt={product.title}
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
-                        fallbackSrc={FALLBACK_IMAGE}
-                      />
-                    </div>
+                {paginatedProducts.map((product) => {
+                  const productCategory = getCategoryBySlug(product.category);
+                  const productCategoryLabel = t(productCategory.labelKey, {
+                    defaultValue: productCategory.fallbackLabel,
+                  });
+                  const descriptionLines = splitDescriptionLines(product.description);
 
-                    <div className="p-6">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        {product.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4">
-                        {product.description}
-                      </p>
-                      <button
-                        onClick={() => {
-                          setModalSrc(product.image);
-                          setModalLoading(true);
-                        }}
-                        className="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold"
-                      >
-                        {t("products.detailsView")}
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
+                  return (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4 }}
+                      whileHover={{ y: -8, scale: 1.01 }}
+                      className="surface-card surface-card-hover overflow-hidden group"
+                    >
+                      <div className="relative h-64 overflow-hidden bg-gradient-to-b from-slate-50 to-slate-100">
+                        <ImageWithFallback
+                          src={product.image}
+                          alt={product.title}
+                          className="w-full h-full object-contain p-4 group-hover:scale-[1.04] transition-transform duration-500"
+                          fallbackSrc={FALLBACK_IMAGE}
+                        />
+                        <div className="absolute left-4 top-4 rounded-full border border-white/80 bg-white/80 px-3 py-1 text-xs font-semibold text-sky-700 backdrop-blur-sm">
+                          {productCategoryLabel}
+                        </div>
+                      </div>
+
+                      <div className="p-6">
+                        {product.title ? (
+                          <h3 className="text-xl font-bold text-slate-900 mb-2 line-clamp-2 min-h-[3.5rem]">
+                            {product.title}
+                          </h3>
+                        ) : (
+                          <h3 className="text-xl font-bold text-slate-900 mb-2 min-h-[3.5rem]">
+                            {t("products.defaultTitle", { defaultValue: "Glass products" })}
+                          </h3>
+                        )}
+                        {descriptionLines.length > 0 ? (
+                          <div className="text-slate-600 mb-5 space-y-1.5 min-h-[4.5rem]">
+                            {descriptionLines.map((line, index) => (
+                              <p key={`${product.id}-description-${index}`} className="text-sm leading-relaxed">
+                                {line}
+                              </p>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-slate-500 mb-5 min-h-[4.5rem]">
+                            {t("products.subtitle")}
+                          </p>
+                        )}
+                        <button
+                          onClick={() => {
+                            setModalSrc(product.image);
+                            setModalLoading(true);
+                          }}
+                          className="w-full btn-primary-soft"
+                        >
+                          {t("products.detailsView")}
+                          <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        </button>
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
 
               <div className="flex items-center justify-center gap-2 mt-10 flex-wrap">
                 <button
                   onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className="px-3 py-2 rounded-lg border border-gray-300 bg-white disabled:opacity-40"
+                  className="px-3 py-2 rounded-xl border border-slate-300 bg-white/90 text-slate-700 disabled:opacity-40"
                   aria-label={t("products.prevPage", { defaultValue: "Предыдущая страница" })}
                 >
                   <ChevronLeft className="w-4 h-4" />
@@ -283,8 +315,8 @@ export const ProductsPage = (): JSX.Element => {
                     onClick={() => setCurrentPage(page)}
                     className={`min-w-10 h-10 px-3 rounded-lg border ${
                       page === currentPage
-                        ? "bg-blue-600 text-white border-blue-600"
-                        : "bg-white text-gray-700 border-gray-300"
+                        ? "bg-sky-600 text-white border-sky-600 shadow-[0_8px_18px_rgba(2,132,199,0.35)]"
+                        : "bg-white/90 text-slate-700 border-slate-300 hover:border-sky-500"
                     }`}
                   >
                     {page}
@@ -294,7 +326,7 @@ export const ProductsPage = (): JSX.Element => {
                 <button
                   onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className="px-3 py-2 rounded-lg border border-gray-300 bg-white disabled:opacity-40"
+                  className="px-3 py-2 rounded-xl border border-slate-300 bg-white/90 text-slate-700 disabled:opacity-40"
                   aria-label={t("products.nextPage", { defaultValue: "Следующая страница" })}
                 >
                   <ChevronRight className="w-4 h-4" />
