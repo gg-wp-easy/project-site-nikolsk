@@ -185,8 +185,12 @@ export const ProductsPage = (): JSX.Element => {
 
   return (
     <div className="min-h-screen">
+<<<<<<< Updated upstream
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden">
+=======
+      <section className="relative py-14 sm:py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden gradient-animate">
+>>>>>>> Stashed changes
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,.1)_50%,transparent_75%,transparent_100%)] bg-[length:50px_50px]" />
         </div>
@@ -195,10 +199,11 @@ export const ProductsPage = (): JSX.Element => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 sm:mb-6"
           >
             {t('products.title')}
           </motion.h1>
+<<<<<<< Updated upstream
         </div>
       </section>
 
@@ -210,6 +215,110 @@ export const ProductsPage = (): JSX.Element => {
               <div className="col-span-full text-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
                 <p className="text-gray-600">{t('products.loading')}</p>
+=======
+          <p className="text-base sm:text-lg text-blue-100">
+            {t("products.currentCategory", {
+              defaultValue: "Категория: {{category}}",
+              category: currentCategoryLabel,
+            })}
+          </p>
+        </div>
+      </section>
+
+      <section className="py-12 sm:py-16 bg-transparent">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap gap-3 mb-8">
+            {PRODUCT_CATEGORIES.map((category) => {
+              const isActive = category.slug === activeCategory;
+              return (
+                <button
+                  key={category.slug}
+                  onClick={() => changeCategory(category.slug)}
+                  className={`pill-filter ${
+                    isActive
+                      ? "bg-gradient-to-r from-sky-600 to-cyan-500 text-white border-transparent shadow-[0_10px_20px_rgba(2,132,199,0.3)]"
+                      : "bg-white/85 text-gray-700 border-slate-200 hover:border-sky-400 hover:text-sky-700"
+                  }`}
+                >
+                  {t(category.labelKey, { defaultValue: category.fallbackLabel })}
+                </button>
+              );
+            })}
+          </div>
+
+          {filteredProducts.length === 0 ? (
+            <p className="text-center text-gray-600 py-10">
+              {t("products.noItems", { defaultValue: "В этой категории пока нет товаров" })}
+            </p>
+          ) : (
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                {paginatedProducts.map((product) => {
+                  const productCategory = getCategoryBySlug(product.category);
+                  const productCategoryLabel = t(productCategory.labelKey, {
+                    defaultValue: productCategory.fallbackLabel,
+                  });
+                  const descriptionLines = splitDescriptionLines(product.description);
+
+                  return (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4 }}
+                      whileHover={{ y: -8, scale: 1.01 }}
+                      className="surface-card surface-card-hover overflow-hidden group"
+                    >
+                      <div className="relative h-56 sm:h-64 overflow-hidden bg-gradient-to-b from-slate-50 to-slate-100">
+                        <ImageWithFallback
+                          src={product.image}
+                          alt={product.title}
+                          className="w-full h-full object-contain p-4 group-hover:scale-[1.04] transition-transform duration-500"
+                          fallbackSrc={FALLBACK_IMAGE}
+                        />
+                        <div className="absolute left-4 top-4 rounded-full border border-white/80 bg-white/80 px-3 py-1 text-xs font-semibold text-sky-700 backdrop-blur-sm">
+                          {productCategoryLabel}
+                        </div>
+                      </div>
+
+                      <div className="p-5 sm:p-6">
+                        {product.title ? (
+                          <h3 className="text-xl font-bold text-slate-900 mb-2 line-clamp-2 min-h-[3.5rem]">
+                            {product.title}
+                          </h3>
+                        ) : (
+                          <h3 className="text-xl font-bold text-slate-900 mb-2 min-h-[3.5rem]">
+                            {t("products.defaultTitle", { defaultValue: "Glass products" })}
+                          </h3>
+                        )}
+                        {descriptionLines.length > 0 ? (
+                          <div className="text-slate-600 mb-5 space-y-1.5 min-h-[4.5rem]">
+                            {descriptionLines.map((line, index) => (
+                              <p key={`${product.id}-description-${index}`} className="text-sm leading-relaxed">
+                                {line}
+                              </p>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-slate-500 mb-5 min-h-[4.5rem]">
+                            {t("products.subtitle")}
+                          </p>
+                        )}
+                        <button
+                          onClick={() => {
+                            setModalSrc(product.image);
+                            setModalLoading(true);
+                          }}
+                          className="w-full btn-primary-soft"
+                        >
+                          {t("products.detailsView")}
+                          <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        </button>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+>>>>>>> Stashed changes
               </div>
             ) : (
               pageProducts.map((product: Product) => (
@@ -230,6 +339,7 @@ export const ProductsPage = (): JSX.Element => {
                   />
                 </div>
 
+<<<<<<< Updated upstream
                 <div className="p-6">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
                     {product.title}
@@ -237,6 +347,20 @@ export const ProductsPage = (): JSX.Element => {
                   <p className="text-gray-600 mb-4">
                     {t('products.dummyDescription', { id: product.id })}
                   </p>
+=======
+              <div className="mt-10 overflow-x-auto">
+                <div className="flex w-max min-w-full items-center justify-center gap-2 px-1">
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-2 rounded-xl border border-slate-300 bg-white/90 text-slate-700 disabled:opacity-40"
+                  aria-label={t("products.prevPage", { defaultValue: "Предыдущая страница" })}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+>>>>>>> Stashed changes
                   <button
                     onClick={() => {
                       setModalSrc(product.image);
@@ -246,10 +370,27 @@ export const ProductsPage = (): JSX.Element => {
                   >
                     {t('products.detailsView')}
                   </button>
+<<<<<<< Updated upstream
                 </div>
               </motion.div>
             ))) }
           </div>
+=======
+                ))}
+
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-2 rounded-xl border border-slate-300 bg-white/90 text-slate-700 disabled:opacity-40"
+                  aria-label={t("products.nextPage", { defaultValue: "Следующая страница" })}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+                </div>
+              </div>
+            </>
+          )}
+>>>>>>> Stashed changes
         </div>
       </section>
 
@@ -309,8 +450,12 @@ export const ProductsPage = (): JSX.Element => {
         </div>
       )}
 
+<<<<<<< Updated upstream
       {/* Advantages Section */}
       <section className="py-20 bg-white">
+=======
+      <section className="py-14 sm:py-20 bg-white">
+>>>>>>> Stashed changes
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -318,12 +463,17 @@ export const ProductsPage = (): JSX.Element => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
+<<<<<<< Updated upstream
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               {t('features.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               {t('features.subtitle')}
             </p>
+=======
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{t("features.title")}</h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">{t("features.subtitle")}</p>
+>>>>>>> Stashed changes
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -352,25 +502,34 @@ export const ProductsPage = (): JSX.Element => {
         </div>
       </section>
 
+<<<<<<< Updated upstream
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-cyan-500">
+=======
+      <section className="py-14 sm:py-20 bg-gradient-to-r from-blue-600 to-cyan-500">
+>>>>>>> Stashed changes
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
+<<<<<<< Updated upstream
             <h2 className="text-4xl font-bold text-white mb-6">
               {t('cta.title')}
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               {t('cta.description')}
             </p>
+=======
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">{t("cta.title")}</h2>
+            <p className="text-lg sm:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">{t("cta.description")}</p>
+>>>>>>> Stashed changes
             <Link to="/contact">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-4 bg-white text-blue-600 rounded-lg text-lg font-semibold shadow-xl"
+                className="px-8 sm:px-10 py-3.5 sm:py-4 bg-white text-blue-600 rounded-lg text-base sm:text-lg font-semibold shadow-xl"
               >
                 {t('cta.button')}
               </motion.button>

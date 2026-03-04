@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router";
 import { motion } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -24,19 +24,19 @@ export function Header() {
       className="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
+        <div className="flex justify-between items-center gap-3 py-3 sm:py-4">
           {/* Logo */}
-          <Link to="/">
+          <Link to="/" className="min-w-0">
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-2"
+              className="flex min-w-0 items-center gap-2"
             >
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
                 {/*<span className="text-white font-bold text-xl">G</span>*/}
               </div>
               <div>
                 {/*<div className="font-bold text-gray-900">GlassTech</div>*/}
-                <div className="text-xs text-gray-500">{t('header.nameFacture')}</div>
+                <div className="nav-brand-text">{t('header.nameFacture')}</div>
               </div>
             </motion.div>
           </Link>
@@ -81,7 +81,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2"
+            className="md:hidden p-2 rounded-lg hover:bg-slate-100/80 transition-colors"
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6 text-gray-900" />
@@ -106,18 +106,36 @@ export function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <div
-                  className={`py-3 px-4 rounded-lg mb-2 ${
+                  className={`py-3 px-4 rounded-xl mb-2 ${
                     location.pathname === item.path
-                      ? "bg-blue-50 text-blue-600"
-                      : "text-gray-600"
+                      ? "bg-sky-50 text-sky-700"
+                      : "text-gray-600 hover:bg-slate-100/80"
                   }`}
                 >
                   {item.label}
                 </div>
               </Link>
             ))}
+            <div className="mt-3 px-4">
+              <div className="nav-link-text text-gray-600 mb-2">
+                {t('header.marketplaces')}
+              </div>
+              <div className="flex items-center gap-4">
+                {marketplaces.map((marketplace) => (
+                  <a
+                    key={marketplace.name}
+                    href={marketplace.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`nav-link-text text-gray-800 transition-colors ${marketplace.color}`}
+                  >
+                    {marketplace.name}
+                  </a>
+                ))}
+              </div>
+            </div>
             <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
-              <button className="w-full mt-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg">
+              <button className="w-full mt-2 btn-primary-soft">
                 {t('header.connection')}
               </button>
             </Link>

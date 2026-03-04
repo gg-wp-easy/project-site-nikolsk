@@ -80,7 +80,11 @@ export function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
+<<<<<<< Updated upstream
       <section className="relative py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden">
+=======
+      <section className="relative py-14 sm:py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden gradient-animate">
+>>>>>>> Stashed changes
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,.1)_50%,transparent_75%,transparent_100%)] bg-[length:50px_50px]" />
         </div>
@@ -89,7 +93,7 @@ export function ContactPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 sm:mb-6"
           >
             {t('contact.hero.title')}
           </motion.h1>
@@ -97,7 +101,7 @@ export function ContactPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-gray-200 max-w-3xl mx-auto"
+            className="text-lg sm:text-xl text-gray-200 max-w-3xl mx-auto"
           >
             {t('contact.hero.subtitle')}
           </motion.p>
@@ -105,9 +109,15 @@ export function ContactPage() {
       </section>
 
       {/* Contact Info Cards */}
+<<<<<<< Updated upstream
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+=======
+      <section className="py-12 sm:py-16 bg-transparent">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-6">
+>>>>>>> Stashed changes
             {contactInfo.map((info, index) => (
               <motion.div
                 key={info.title}
@@ -115,8 +125,13 @@ export function ContactPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+<<<<<<< Updated upstream
                 whileHover={{ y: -5 }}
                 className="bg-white p-6 rounded-xl shadow-lg"
+=======
+                whileHover={{ y: -6, scale: 1.01 }}
+                className="surface-card surface-card-hover p-5 sm:p-6"
+>>>>>>> Stashed changes
               >
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 5 }}
@@ -127,12 +142,75 @@ export function ContactPage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">
                   {info.title}
                 </h3>
+<<<<<<< Updated upstream
                 <div className="space-y-1">
                   {info.details.map((detail, i) => (
                     <p key={i} className="text-gray-600 text-sm">
                       {detail}
                     </p>
                   ))}
+=======
+                <div className="space-y-2">
+                  {"phones" in info && info.phones ? (
+                    info.phones.map((phone) => (
+                      <div key={phone.digits} className="text-sm text-gray-600">
+                        {"label" in phone && phone.label ? (
+                          <div className="font-medium text-gray-900">{phone.label}</div>
+                        ) : null}
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center gap-2 text-gray-300">
+                            <Phone className="w-4 h-4 text-blue-400" />
+                          <a
+                            href={`tel:+${phone.digits}`}
+                            className="text-blue-600 hover:text-blue-700 break-all"
+                          >
+                            {phone.display}
+                          </a>
+                          </div>
+                          
+                          <a
+                            href={`https://t.me/+${phone.digits}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              viewBox="0 0 24 24"
+                              className="w-4 h-4"
+                              fill="currentColor"
+                            >
+                              <path d="M9.993 15.164 9.82 19.1c.43 0 .62-.183.85-.402l2.04-1.932 4.233 3.097c.778.429 1.332.204 1.525-.72l2.763-12.965c.236-1.1-.398-1.53-1.1-1.275L2.28 9.57c-1.063.418-1.048 1.018-.182 1.286l4.64 1.447 10.77-6.8c.506-.312.967-.14.587.198L9.993 15.164z" />
+                            </svg>
+                            {t('contact.messengers.telegram')}
+                          </a>
+                          <a
+                            href={`https://wa.me/${phone.digits}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 text-green-600 hover:text-green-700"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              viewBox="0 0 24 24"
+                              className="w-4 h-4"
+                              fill="currentColor"
+                            >
+                              <path d="M20.52 3.48A11.85 11.85 0 0 0 12.03 0C5.4 0 0 5.4 0 12.03c0 2.12.55 4.19 1.6 6.03L0 24l6.18-1.57a12.06 12.06 0 0 0 5.85 1.5h.01c6.63 0 12.03-5.4 12.03-12.03 0-3.22-1.25-6.25-3.55-8.42ZM12.03 21.5h-.01a9.5 9.5 0 0 1-4.84-1.33l-.35-.2-3.67.93.98-3.58-.22-.37a9.46 9.46 0 0 1-1.46-4.92c0-5.25 4.27-9.52 9.53-9.52a9.45 9.45 0 0 1 6.73 2.79 9.46 9.46 0 0 1 2.79 6.73c0 5.26-4.27 9.53-9.48 9.53Zm5.47-7.1c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.46-.88-.78-1.47-1.75-1.64-2.05-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.5l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.05 1.03-1.05 2.5 0 1.47 1.08 2.89 1.23 3.09.15.2 2.13 3.26 5.15 4.57.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z" />
+                            </svg>
+                            {t('contact.messengers.whatsapp')}
+                          </a>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    info.details?.map((detail, i) => (
+                      <p key={i} className="text-gray-600 text-sm">
+                        {detail}
+                      </p>
+                    ))
+                  )}
+>>>>>>> Stashed changes
                 </div>
               </motion.div>
             ))}
@@ -140,6 +218,38 @@ export function ContactPage() {
         </div>
       </section>
 
+<<<<<<< Updated upstream
+=======
+      {/* Yandex Map */}
+      <section className="pb-10 sm:pb-12 bg-transparent">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="surface-card p-4 sm:p-6"
+          >
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              {t('map.title')}
+            </h2>
+            <p className="text-sm text-gray-600 mb-4">{companyAddress}</p>
+            <div className="overflow-hidden rounded-xl border border-slate-200">
+              <iframe
+                title={`${t('map.title')} - ${companyAddress}`}
+                src={yandexMapSrc}
+                width="100%"
+                height="340"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="block w-full sm:h-[420px]"
+              />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+>>>>>>> Stashed changes
       {/* Contact Form & Map */}
       {/*<section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -332,7 +442,11 @@ export function ContactPage() {
       </section>*/}
 
       {/* FAQ Section */}
+<<<<<<< Updated upstream
       {/*<section className="py-20 bg-gray-50">
+=======
+      <section className="py-14 sm:py-20 bg-transparent">
+>>>>>>> Stashed changes
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -340,7 +454,7 @@ export function ContactPage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
               {t('contact.faqTitle')}
             </h2>
             <p className="text-gray-600">
@@ -356,7 +470,12 @@ export function ContactPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+<<<<<<< Updated upstream
                 className="bg-white p-6 rounded-xl shadow-md"
+=======
+                whileHover={{ y: -4 }}
+                className="surface-card surface-card-hover p-5 sm:p-6"
+>>>>>>> Stashed changes
               >
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {faq.q}
