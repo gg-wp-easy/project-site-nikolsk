@@ -180,7 +180,7 @@ export const ProductsPage = (): JSX.Element => {
 
   return (
     <div className="min-h-screen">
-      <section className="relative py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden gradient-animate">
+      <section className="relative py-14 sm:py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden gradient-animate">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,.1)_50%,transparent_75%,transparent_100%)] bg-[length:50px_50px]" />
         </div>
@@ -191,11 +191,11 @@ export const ProductsPage = (): JSX.Element => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 sm:mb-6"
           >
             {t("products.title")}
           </motion.h1>
-          <p className="text-lg text-blue-100">
+          <p className="text-base sm:text-lg text-blue-100">
             {t("products.currentCategory", {
               defaultValue: "Категория: {{category}}",
               category: currentCategoryLabel,
@@ -204,7 +204,7 @@ export const ProductsPage = (): JSX.Element => {
         </div>
       </section>
 
-      <section className="py-16 bg-transparent">
+      <section className="py-12 sm:py-16 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-3 mb-8">
             {PRODUCT_CATEGORIES.map((category) => {
@@ -231,7 +231,7 @@ export const ProductsPage = (): JSX.Element => {
             </p>
           ) : (
             <>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 {paginatedProducts.map((product) => {
                   const productCategory = getCategoryBySlug(product.category);
                   const productCategoryLabel = t(productCategory.labelKey, {
@@ -248,7 +248,7 @@ export const ProductsPage = (): JSX.Element => {
                       whileHover={{ y: -8, scale: 1.01 }}
                       className="surface-card surface-card-hover overflow-hidden group"
                     >
-                      <div className="relative h-64 overflow-hidden bg-gradient-to-b from-slate-50 to-slate-100">
+                      <div className="relative h-56 sm:h-64 overflow-hidden bg-gradient-to-b from-slate-50 to-slate-100">
                         <ImageWithFallback
                           src={product.image}
                           alt={product.title}
@@ -260,7 +260,7 @@ export const ProductsPage = (): JSX.Element => {
                         </div>
                       </div>
 
-                      <div className="p-6">
+                      <div className="p-5 sm:p-6">
                         {product.title ? (
                           <h3 className="text-xl font-bold text-slate-900 mb-2 line-clamp-2 min-h-[3.5rem]">
                             {product.title}
@@ -299,7 +299,8 @@ export const ProductsPage = (): JSX.Element => {
                 })}
               </div>
 
-              <div className="flex items-center justify-center gap-2 mt-10 flex-wrap">
+              <div className="mt-10 overflow-x-auto">
+                <div className="flex w-max min-w-full items-center justify-center gap-2 px-1">
                 <button
                   onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
@@ -331,6 +332,7 @@ export const ProductsPage = (): JSX.Element => {
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
+                </div>
               </div>
             </>
           )}
@@ -371,7 +373,7 @@ export const ProductsPage = (): JSX.Element => {
         </div>
       )}
 
-      <section className="py-20 bg-white">
+      <section className="py-14 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -379,8 +381,8 @@ export const ProductsPage = (): JSX.Element => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">{t("features.title")}</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">{t("features.subtitle")}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{t("features.title")}</h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">{t("features.subtitle")}</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -407,20 +409,20 @@ export const ProductsPage = (): JSX.Element => {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-cyan-500">
+      <section className="py-14 sm:py-20 bg-gradient-to-r from-blue-600 to-cyan-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-white mb-6">{t("cta.title")}</h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">{t("cta.description")}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">{t("cta.title")}</h2>
+            <p className="text-lg sm:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">{t("cta.description")}</p>
             <Link to="/contact">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-4 bg-white text-blue-600 rounded-lg text-lg font-semibold shadow-xl"
+                className="px-8 sm:px-10 py-3.5 sm:py-4 bg-white text-blue-600 rounded-lg text-base sm:text-lg font-semibold shadow-xl"
               >
                 {t("cta.button")}
               </motion.button>

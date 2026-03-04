@@ -41,26 +41,26 @@ export function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[88vh] sm:h-screen flex items-center justify-center overflow-hidden">
         {/* Canvas анимация вместо изображения */}
         <GlassAnimation />
 
         {/* Кнопка переключения языка в правом верхнем углу */}
-        <div className="absolute top-6 right-6 z-20">
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
           <LanguageSwitcher />
         </div>
 
         {/* Затемняющий оверлей для лучшей читаемости текста */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-950/70 via-transparent to-cyan-950/70 gradient-animate" />
-        <div className="floating-orb h-52 w-52 bg-cyan-300/30 top-20 left-12" />
-        <div className="floating-orb floating-orb-delay floating-orb-slow h-64 w-64 bg-blue-400/25 bottom-16 right-10" />
+        <div className="floating-orb h-36 w-36 sm:h-52 sm:w-52 bg-cyan-300/30 top-16 left-4 sm:left-12" />
+        <div className="floating-orb floating-orb-delay floating-orb-slow h-44 w-44 sm:h-64 sm:w-64 bg-blue-400/25 bottom-10 right-2 sm:right-10" />
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-5xl md:text-7xl font-bold text-white mb-6"
+            className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-5 sm:mb-6"
           >
               {t('hero.title')}
             <br />
@@ -73,7 +73,7 @@ export function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl text-gray-200 mb-12 max-w-3xl mx-auto"
+            className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 sm:mb-12 max-w-3xl mx-auto"
           >
             
           </motion.p>
@@ -84,21 +84,21 @@ export function HomePage() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col gap-4 justify-center items-center sm:flex-row sm:justify-center"
           >
-            <Link to="/products">
+            <Link to="/products" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-primary-soft px-8 py-4 text-lg"
+                className="btn-primary-soft w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 text-base sm:text-lg"
               >
                 {t('hero.products')}
                 <ArrowRight className="w-5 h-5" />
               </motion.button>
             </Link>
-            <Link to="/contact">
+            <Link to="/contact" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-white/10 backdrop-blur-md text-white border-2 border-white/30 rounded-lg text-lg font-semibold transition-all duration-300 hover:bg-white/20 hover:border-white/50"
+                className="w-full sm:w-auto px-7 sm:px-8 py-3.5 sm:py-4 bg-white/10 backdrop-blur-md text-white border-2 border-white/30 rounded-lg text-base sm:text-lg font-semibold transition-all duration-300 hover:bg-white/20 hover:border-white/50"
               >
                 {t('hero.contact')}
               </motion.button>
@@ -130,7 +130,7 @@ export function HomePage() {
       </section>*/}
 
       {/* Features Section */}
-      <section className="py-20 bg-transparent">
+      <section className="py-14 sm:py-20 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -138,10 +138,10 @@ export function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4" >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" >
               {t('features.title')}
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
               {t('features.subtitle')}
             </p>
           </motion.div>
@@ -175,7 +175,7 @@ export function HomePage() {
       </section>
 
       {/* Products Preview */}
-      <section className="py-20 bg-white">
+      <section className="py-14 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -183,10 +183,10 @@ export function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
               {t('products.title')}
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg sm:text-xl text-gray-600">
               {t('products.subtitle')}
             </p>
           </motion.div>
@@ -261,7 +261,7 @@ export function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-14 sm:py-20 overflow-hidden">
         <div className="absolute inset-0">
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1610896813398-6e965b3cc1b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnbGFzcyUyMG1hbnVmYWN0dXJpbmclMjBmYWN0b3J5fGVufDF8fHx8MTc3MTkwODY2Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
@@ -277,17 +277,17 @@ export function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
               {t('cta.title')}
             </h2>
-            <p className="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
               {t('cta.description')}
             </p>
             <Link to="/contact">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-4 bg-white text-blue-600 rounded-lg text-lg font-semibold shadow-xl"
+                className="px-8 sm:px-10 py-3.5 sm:py-4 bg-white text-blue-600 rounded-lg text-base sm:text-lg font-semibold shadow-xl"
               >
                 {t('cta.button')}
               </motion.button>

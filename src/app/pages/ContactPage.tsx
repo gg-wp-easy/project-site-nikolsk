@@ -105,7 +105,7 @@ export function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden gradient-animate">
+      <section className="relative py-14 sm:py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-700 overflow-hidden gradient-animate">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,.1)_50%,transparent_75%,transparent_100%)] bg-[length:50px_50px]" />
         </div>
@@ -116,7 +116,7 @@ export function ContactPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 sm:mb-6"
           >
             {t('contact.hero.title')}
           </motion.h1>
@@ -124,7 +124,7 @@ export function ContactPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-gray-200 max-w-3xl mx-auto"
+            className="text-lg sm:text-xl text-gray-200 max-w-3xl mx-auto"
           >
             {t('contact.hero.subtitle')}
           </motion.p>
@@ -132,7 +132,7 @@ export function ContactPage() {
       </section>
 
       {/* Contact Info Cards */}
-      <section className="py-16 bg-transparent">
+      <section className="py-12 sm:py-16 bg-transparent">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-6">
             {contactInfo.map((info, index) => (
@@ -143,7 +143,7 @@ export function ContactPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ y: -6, scale: 1.01 }}
-                className="surface-card surface-card-hover p-6"
+                className="surface-card surface-card-hover p-5 sm:p-6"
               >
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 5 }}
@@ -166,7 +166,7 @@ export function ContactPage() {
                             <Phone className="w-4 h-4 text-blue-400" />
                           <a
                             href={`tel:+${phone.digits}`}
-                            className="text-blue-600 hover:text-blue-700"
+                            className="text-blue-600 hover:text-blue-700 break-all"
                           >
                             {phone.display}
                           </a>
@@ -222,7 +222,7 @@ export function ContactPage() {
       </section>
 
       {/* Yandex Map */}
-      <section className="pb-12 bg-transparent">
+      <section className="pb-10 sm:pb-12 bg-transparent">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -240,10 +240,10 @@ export function ContactPage() {
                 title={`${t('map.title')} - ${companyAddress}`}
                 src={yandexMapSrc}
                 width="100%"
-                height="420"
+                height="340"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="block w-full"
+                className="block w-full sm:h-[420px]"
               />
             </div>
           </motion.div>
@@ -429,7 +429,7 @@ export function ContactPage() {
       </section>*/}
 
       {/* FAQ Section */}
-      <section className="py-20 bg-transparent">
+      <section className="py-14 sm:py-20 bg-transparent">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -437,7 +437,7 @@ export function ContactPage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
               {t('contact.faqTitle')}
             </h2>
             <p className="text-gray-600">
@@ -454,7 +454,7 @@ export function ContactPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ y: -4 }}
-                className="surface-card surface-card-hover p-6"
+                className="surface-card surface-card-hover p-5 sm:p-6"
               >
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {faq.q}

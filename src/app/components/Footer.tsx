@@ -17,12 +17,12 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            {/*<div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl"></span>
-              </div>
+            <div className="flex items-center gap-2 mb-4">
               <span className="font-bold text-white">{t('footer.boldTitle')}</span>
-            </div>*/}
+            </div>
+            <p className="text-sm leading-relaxed mb-4">
+              {t('footer.address')}
+            </p>
             <p className="text-sm leading-relaxed mb-4">
               {t('footer.description')}
             </p>

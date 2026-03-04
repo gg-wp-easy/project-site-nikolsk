@@ -190,6 +190,12 @@
       linear-gradient(180deg, rgba(248, 250, 252, 0.86), rgba(241, 245, 249, 0.96));
     background-attachment: fixed;
   }
+
+  @media (max-width: 768px) {
+    body {
+      background-attachment: scroll;
+    }
+  }
 }
 
 @layer components {
@@ -253,6 +259,28 @@
 
   .floating-orb-slow {
     animation-duration: 13s;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-brand-text {
+    letter-spacing: 0.08em;
+    font-size: 0.66rem;
+  }
+
+  .nav-link-text {
+    font-size: 0.86rem;
+    letter-spacing: 0.02em;
+  }
+
+  .pill-filter {
+    padding: 0.5rem 0.85rem;
+    border-radius: 9999px;
+  }
+
+  .btn-primary-soft {
+    padding: 0.75rem 1rem;
+    border-radius: 0.85rem;
   }
 }
 
