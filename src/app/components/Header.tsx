@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router";
 import { motion } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -8,6 +8,23 @@ export function Header() {
   const { t } = useTranslation(); 
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const marketplaces = [
+    {
+      name: "Wildberries",
+      href: "https://www.wildberries.ru",
+      color: "hover:text-pink-600",
+    },
+    {
+      name: "Ozon",
+      href: "https://www.ozon.ru",
+      color: "hover:text-blue-600",
+    },
+    {
+      name: "Yandex Market",
+      href: "https://market.yandex.ru",
+      color: "hover:text-yellow-600",
+    },
+  ];
 
   const navItems = [
     { path: "/", label: t('links.home') },
@@ -67,34 +84,31 @@ export function Header() {
                 </motion.div>
               </Link>
             ))}
-            <div className="flex items-center gap-3 border-l border-gray-200 pl-4">
-              <span className="text-sm font-semibold text-gray-600">
-                {t('header.marketplaces')}
-              </span>
-              <a
-                href="https://www.wildberries.ru"
-                target="_blank"
-                rel="noreferrer"
-                className="nav-link-text text-gray-800 hover:text-pink-600 transition-colors"
-              >
-                Wildberries
-              </a>
-              <a
-                href="https://www.ozon.ru"
-                target="_blank"
-                rel="noreferrer"
-                className="nav-link-text text-gray-800 hover:text-blue-600 transition-colors"
-              >
-                Ozon
-              </a>
-              <a
-                href="https://market.yandex.ru"
-                target="_blank"
-                rel="noreferrer"
-                className="nav-link-text text-gray-800 hover:text-yellow-600 transition-colors"
-              >
-                Yandex Market
-              </a>
+            <div className="relative border-l border-gray-200 pl-4">
+              <div className="group relative">
+                <button
+                  type="button"
+                  className="flex items-center gap-1 rounded-full px-3 py-2 text-sm font-semibold text-gray-600 transition-colors hover:bg-slate-100/80 hover:text-gray-900"
+                >
+                  <span>{t('header.marketplaces')}</span>
+                  <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
+                </button>
+                <div className="pointer-events-none absolute left-0 top-full z-50 min-w-56 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+                  <div className="rounded-xl border border-slate-200/90 bg-white/95 p-2 shadow-[0_16px_32px_rgba(15,23,42,0.14)] backdrop-blur-sm">
+                    {marketplaces.map((marketplace) => (
+                      <a
+                        key={marketplace.name}
+                        href={marketplace.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`block rounded-lg px-3 py-2 nav-link-text text-gray-800 transition-colors hover:bg-slate-50 ${marketplace.color}`}
+                      >
+                        {marketplace.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </nav>
 
@@ -150,30 +164,17 @@ export function Header() {
                 {t('header.marketplaces')}
               </div>
               <div className="flex items-center gap-4">
-                <a
-                  href="https://www.wildberries.ru"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="nav-link-text text-gray-800 hover:text-pink-600 transition-colors"
-                >
-                  Wildberries
-                </a>
-                <a
-                  href="https://www.ozon.ru"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="nav-link-text text-gray-800 hover:text-blue-600 transition-colors"
-                >
-                  Ozon
-                </a>
-                <a
-                  href="https://market.yandex.ru"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="nav-link-text text-gray-800 hover:text-yellow-600 transition-colors"
-                >
-                  Yandex Market
-                </a>
+                {marketplaces.map((marketplace) => (
+                  <a
+                    key={marketplace.name}
+                    href={marketplace.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`nav-link-text text-gray-800 transition-colors ${marketplace.color}`}
+                  >
+                    {marketplace.name}
+                  </a>
+                ))}
               </div>
             </div>
             <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>

@@ -831,11 +831,11 @@
       },
       {
         "id": 23,
-        "src": "/images/vases/images_112.jpg",
-        "name": "images_112",
-        "path": "/images/vases/images_112.jpg",
+        "src": "/images/vases/image_112.jpg",
+        "name": "image_112",
+        "path": "/images/vases/image_112.jpg",
         "category": "vases",
-        "filename": "images_112.jpg"
+        "filename": "image_112.jpg"
       }
     ]
   },
@@ -1658,11 +1658,11 @@
     },
     {
       "id": 23,
-      "src": "/images/vases/images_112.jpg",
-      "name": "images_112",
-      "path": "/images/vases/images_112.jpg",
+      "src": "/images/vases/image_112.jpg",
+      "name": "image_112",
+      "path": "/images/vases/image_112.jpg",
       "category": "vases",
-      "filename": "images_112.jpg"
+      "filename": "image_112.jpg"
     }
   ]
 }

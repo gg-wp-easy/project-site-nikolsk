@@ -51,6 +51,10 @@ export function ContactPage() {
 
   const faqListRaw = t('faq', { returnObjects: true });
   const faqList = Array.isArray(faqListRaw) ? faqListRaw : [];
+  const companyAddress = t('contact.details.address.0');
+  const yandexMapSrc = `https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(
+    companyAddress
+  )}&z=16`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -214,6 +218,35 @@ export function ContactPage() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Yandex Map */}
+      <section className="pb-12 bg-transparent">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="surface-card p-4 sm:p-6"
+          >
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              {t('map.title')}
+            </h2>
+            <p className="text-sm text-gray-600 mb-4">{companyAddress}</p>
+            <div className="overflow-hidden rounded-xl border border-slate-200">
+              <iframe
+                title={`${t('map.title')} - ${companyAddress}`}
+                src={yandexMapSrc}
+                width="100%"
+                height="420"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="block w-full"
+              />
+            </div>
+          </motion.div>
         </div>
       </section>
 

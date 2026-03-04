@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { Link } from "react-router";
-import { ArrowRight, CheckCircle, Award, Users, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle, Award, Users, Sparkles, Shield } from "lucide-react";
 import { GlassAnimation } from "../components/animations/GlassAnimation";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useTranslation } from "react-i18next";
@@ -27,9 +27,9 @@ export function HomePage() {
       description: t('features.team.description'),
     },
     {
-      icon: CheckCircle,
-      title: t('features.reliability.title'),
-      description: t('features.reliability.description'),
+      icon: Shield,
+      title: t("products.advantages.safety.title"),
+      description: t("products.advantages.safety.description"),
     },
   ];
 
