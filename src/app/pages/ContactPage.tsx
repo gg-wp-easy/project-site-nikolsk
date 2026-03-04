@@ -17,14 +17,19 @@ export function ContactPage() {
       title: t('contact.cards.phone'),
       phones: [
         {
-          //label: t('contact.phoneLabels.sales'),
+          label: t('contact.phoneLabels.sales'),
           display: "+7 937 418 1818",
           digits: "79374181818",
         },
         {
-          //label: t('contact.phoneLabels.production'),
+          label: t('contact.phoneLabels.production'),
           display: "+7 927 288 6191",
           digits: "79272886191",
+        },
+        {
+          label: t('contact.phoneLabels.delivery'),
+          display: "+79273643687",
+          digits: "79273643687",
         },
       ],
     },

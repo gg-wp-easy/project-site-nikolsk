@@ -1,8 +1,9 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { PRODUCT_CATEGORIES } from "../shared/productCategories";
+import icon from "../assets/icon.png";
 
 export function Footer() {
   const { t } = useTranslation();
@@ -18,6 +19,9 @@ export function Footer() {
           {/* Company Info */}
           <div>
             <div className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl"><img src={icon} alt="Описание изображения" /></span>
+              </div>
               <span className="font-bold text-white">{t('footer.boldTitle')}</span>
             </div>
             <p className="text-sm leading-relaxed mb-4">
@@ -109,15 +113,20 @@ export function Footer() {
               <div className="space-y-3">
                 {[
                   {
-                    //label: t('contact.phoneLabels.sales'),
+                    label: t('contact.phoneLabels.sales'),
                     display: "+7 937 418 1818",
                     digits: "79374181818",
                   },
                   {
-                    //label: t('contact.phoneLabels.production'),
+                    label: t('contact.phoneLabels.production'),
                     display: "+7 927 288 6191",
                     digits: "79272886191",
                   },
+                {
+                  label: t('contact.phoneLabels.delivery'),
+                  display: "+79273643687",
+                  digits: "79273643687",
+                },
                 ].map((phone) => (
                   <div key={phone.digits} className="space-y-1">
                     <div className="footer-link-text font-medium text-white">{phone.label}</div>

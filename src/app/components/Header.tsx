@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import icon from "../assets/icon.png";
 
 export function Header() {
   const { t } = useTranslation(); 
@@ -59,9 +60,9 @@ export function Header() {
               whileHover={{ scale: 1.05 }}
               className="flex min-w-0 items-center gap-2"
             >
-              {/*<div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">G</span>
-              </div>*/}
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl"><img src={icon} alt="Описание изображения" /></span>
+              </div>
               <div>
                 {/*<div className="font-bold text-gray-900">GlassTech</div>*/}
                 <div className="nav-brand-text max-w-[180px] sm:max-w-none leading-snug">

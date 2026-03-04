@@ -157,6 +157,11 @@
                                         "Пензенская обл. г.Никольск ул. ПОБЕДЫ 36г"
                                                 ]
                                 },
+                    "phoneLabels":  {
+                                        "sales":  "Mikhail",
+                                        "production":  "Pavel",
+                                        "delivery":  "Supply department: Olga"
+                                    },            
                     "faqTitle":  "Frequently Asked Questions",
                     "faqSubtitle":  "Answers to common questions"
                 },
