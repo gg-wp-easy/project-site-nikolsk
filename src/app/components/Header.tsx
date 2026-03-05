@@ -50,7 +50,7 @@ export function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6 }}
-      className="sticky top-0 z-50 border-b border-white/70 bg-white/75 backdrop-blur-xl shadow-[0_8px_24px_rgba(15,23,42,0.08)]"
+      className="sticky top-0 z-50 border-b border-white/70 bg-white/75 backdrop-blur-md shadow-[0_8px_24px_rgba(15,23,42,0.08)]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center gap-3 py-3 sm:py-4">
@@ -234,3 +234,4 @@ export function Header() {
     </motion.header>
   );
 }
+
