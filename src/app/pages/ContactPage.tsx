@@ -33,16 +33,11 @@ export function ContactPage() {
         },
       ],
     },
-    /*{
+    {
       icon: Mail,
       title: t('contact.cards.email'),
-      details: ["info@glasstech.ru"],
-    },*/
-    /*{
-      icon: Clock,
-      title: t('contact.cards.hours'),
-      details: t('contact.details.hours', { returnObjects: true }) as string[],
-    },*/
+      details: ["traidservis58@internet.ru"],
+    },
   ];
 
   const [formData, setFormData] = useState({

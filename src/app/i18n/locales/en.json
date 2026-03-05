@@ -146,7 +146,8 @@
                                  "subtitle":  "We are always happy to answer your questions and discuss your project"
                              },
                     "cards":  {
-                                  "phone":  "Phone"
+                                  "phone":  "Phone",
+                                  "email": "Email"
                               },
                     "messengers":  {
                                        "telegram":  "Telegram",

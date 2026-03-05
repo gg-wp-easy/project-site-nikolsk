@@ -177,12 +177,12 @@ export function Footer() {
                   </div>
                 ))}
               </div>
-              {/*<div className="flex items-center gap-2 text-gray-300 pt-2">
+              <div className="flex items-center gap-2 text-gray-300 pt-2">
                 <Mail className="w-4 h-4 text-blue-400" />
-                <a href="mailto:info@glasstech.ru" className="footer-link-text hover:text-blue-300">
-                  info@glasstech.ru
+                <a href="mailto:traidservis58@internet.ru" className="footer-link-text hover:text-blue-300">
+                  traidservis58@internet.ru
                 </a>
-              </div>*/}
+              </div>
             </div>
           </div>
         </div>
