@@ -11,11 +11,14 @@ export function GlassAnimation() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    const nav = navigator as Navigator & { deviceMemory?: number };
+    const isLowPerfDevice = (navigator.hardwareConcurrency || 8) <= 4 || (nav.deviceMemory || 8) <= 4;
     const shouldReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const shouldReduceEffects = shouldReduceMotion || isLowPerfDevice;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     let rafId = 0;
     let lastFrameTime = 0;
-    const frameIntervalMs = shouldReduceMotion ? 1000 / 20 : 1000 / 30;
+    const frameIntervalMs = shouldReduceEffects ? 1000 / 20 : 1000 / 30;
 
     // Устанавливаем размер canvas
     const resizeCanvas = () => {
@@ -110,7 +113,7 @@ export function GlassAnimation() {
 
     // Создаем частицы
     const particles: GlassParticle[] = [];
-    const particleCount = shouldReduceMotion ? 24 : window.innerWidth < 768 ? 36 : 52;
+    const particleCount = shouldReduceEffects ? 24 : window.innerWidth < 768 ? 36 : 52;
 
     for (let i = 0; i < particleCount; i++) {
       particles.push(new GlassParticle());
@@ -187,7 +190,7 @@ export function GlassAnimation() {
     }
 
     const streams: GlassStream[] = [];
-    const streamCount = shouldReduceMotion ? 1 : 2;
+    const streamCount = shouldReduceEffects ? 1 : 2;
     for (let i = 0; i < streamCount; i++) {
       streams.push(new GlassStream());
     }

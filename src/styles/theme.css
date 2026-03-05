@@ -284,6 +284,20 @@
   }
 }
 
+:root[data-low-perf="true"] .gradient-animate {
+  animation: none !important;
+  background-size: auto;
+}
+
+:root[data-low-perf="true"] .floating-orb {
+  animation: none !important;
+  display: none !important;
+}
+
+:root[data-low-perf="true"] .surface-card-hover {
+  transition-duration: 0.15s;
+}
+
 @keyframes float-soft {
   0%,
   100% {
