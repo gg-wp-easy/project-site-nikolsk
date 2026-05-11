@@ -23,11 +23,9 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   }, [src, fallbackSrc]);
 
   // обрабатываем ошибку загрузки – сначала простой кеш‑бастер, затем fallback
-  const handleError = async (e?: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleError = async (e: React.SyntheticEvent<HTMLImageElement>) => {
     // позовём внешний обработчик, если был
-    if (onError) {
-      try { onError(e as any); } catch {} // не останавливать
-    }
+    onError?.(e);
     //console.log(`🖼️ Error loading: ${currentSrc}, retry ${retryCount}`);
 
     // первый раз попробуем альтернативные расширения
@@ -43,7 +41,9 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
             setRetryCount(prev => prev + 1);
             return;
           }
-        } catch {}
+        } catch {
+          continue;
+        }
       }
     }
 
@@ -58,9 +58,7 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
 
 
   const handleLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    if (onLoad) {
-      try { onLoad(e); } catch {}
-    }
+    onLoad?.(e);
   };
 
   return (

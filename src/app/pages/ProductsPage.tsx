@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import React, { JSX, useEffect, useMemo, useState } from "react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { CheckCircle, Shield, Sparkles, Layers, X, ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
+import { Shield, Sparkles, Layers, X, ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useSearchParams } from "react-router";
 import {
@@ -191,11 +191,11 @@ export const ProductsPage = (): JSX.Element => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 sm:mb-6"
+            className="page-hero-title mb-4 sm:mb-6"
           >
             {t("products.title")}
           </motion.h1>
-          <p className="text-base sm:text-lg text-blue-100">
+          <p className="page-hero-subtitle">
             {t("products.currentCategory", {
               defaultValue: "Категория: {{category}}",
               category: currentCategoryLabel,
@@ -255,25 +255,25 @@ export const ProductsPage = (): JSX.Element => {
                           className="w-full h-full object-contain p-4 group-hover:scale-[1.04] transition-transform duration-500"
                           fallbackSrc={FALLBACK_IMAGE}
                         />
-                        <div className="absolute left-4 top-4 rounded-full border border-white/80 bg-white/80 px-3 py-1 text-xs font-semibold text-sky-700 backdrop-blur-sm">
+                        <div className="absolute left-4 top-4 rounded-full border border-white/80 bg-white/85 px-3 py-1 text-xs font-semibold text-sky-700 backdrop-blur-sm">
                           {productCategoryLabel}
                         </div>
                       </div>
 
                       <div className="p-5 sm:p-6">
                         {product.title ? (
-                          <h3 className="text-xl font-bold text-slate-900 mb-2 line-clamp-2 min-h-[3.5rem]">
+                          <h3 className="text-xl font-bold leading-snug text-slate-950 mb-2 line-clamp-2 min-h-[3.5rem]">
                             {product.title}
                           </h3>
                         ) : (
-                          <h3 className="text-xl font-bold text-slate-900 mb-2 min-h-[3.5rem]">
+                          <h3 className="text-xl font-bold leading-snug text-slate-950 mb-2 min-h-[3.5rem]">
                             {t("products.defaultTitle", { defaultValue: "Glass products" })}
                           </h3>
                         )}
                         {descriptionLines.length > 0 ? (
                           <div className="text-slate-600 mb-5 space-y-1.5 min-h-[4.5rem]">
                             {descriptionLines.map((line, index) => (
-                              <p key={`${product.id}-description-${index}`} className="text-sm leading-relaxed">
+                              <p key={`${product.id}-description-${index}`} className="text-sm leading-7">
                                 {line}
                               </p>
                             ))}
@@ -381,8 +381,8 @@ export const ProductsPage = (): JSX.Element => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{t("features.title")}</h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">{t("features.subtitle")}</p>
+            <h2 className="section-heading mb-4">{t("features.title")}</h2>
+            <p className="section-lead">{t("features.subtitle")}</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -397,12 +397,12 @@ export const ProductsPage = (): JSX.Element => {
               >
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 5 }}
-                  className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center"
+                  className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center"
                 >
                   <advantage.icon className="w-8 h-8 text-white" />
                 </motion.div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{advantage.title}</h3>
-                <p className="text-gray-600">{advantage.description}</p>
+                <h3 className="text-xl font-bold text-slate-950 mb-2">{advantage.title}</h3>
+                <p className="text-sm leading-7 text-slate-600 sm:text-base">{advantage.description}</p>
               </motion.div>
             ))}
           </div>
@@ -416,8 +416,8 @@ export const ProductsPage = (): JSX.Element => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">{t("cta.title")}</h2>
-            <p className="text-lg sm:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">{t("cta.description")}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-white mb-6">{t("cta.title")}</h2>
+            <p className="mx-auto mb-8 max-w-2xl text-base leading-8 text-blue-100 sm:text-lg">{t("cta.description")}</p>
             <Link to="/contact">
               <motion.button
                 whileHover={{ scale: 1.05 }}

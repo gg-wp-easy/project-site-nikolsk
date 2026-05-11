@@ -47,12 +47,12 @@ export function Header() {
 
   return (
     <motion.header
-      initial={{ y: -100 }}
+      initial={false}
       animate={{ y: 0 }}
       transition={{ duration: 0.6 }}
       className="sticky top-0 z-50 border-b border-white/70 bg-white/75 backdrop-blur-md shadow-[0_8px_24px_rgba(15,23,42,0.08)]"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-[24rem] px-4 sm:max-w-7xl sm:px-6 lg:px-8">
         <div className="flex justify-between items-center gap-3 py-3 sm:py-4">
           {/* Logo */}
           <Link to="/" className="min-w-0">
@@ -61,7 +61,7 @@ export function Header() {
               className="flex min-w-0 items-center gap-2"
             >
               <div className="w-10 h-10 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl"><img src={icon} alt="Описание изображения" /></span>
+                <span className="text-white font-bold text-xl"><img src={icon} alt="Трайд Сервис" /></span>
               </div>
               <div>
                 {/*<div className="font-bold text-gray-900">GlassTech</div>*/}
@@ -234,4 +234,3 @@ export function Header() {
     </motion.header>
   );
 }
-

@@ -10,6 +10,7 @@ export function GlassAnimation() {
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    const canvasEl: HTMLCanvasElement = canvas;
 
     const nav = navigator as Navigator & { deviceMemory?: number };
     const isLowPerfDevice = (navigator.hardwareConcurrency || 8) <= 4 || (nav.deviceMemory || 8) <= 4;
@@ -22,8 +23,8 @@ export function GlassAnimation() {
 
     // Устанавливаем размер canvas
     const resizeCanvas = () => {
-      canvas.width = Math.floor(window.innerWidth * dpr);
-      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvasEl.width = Math.floor(window.innerWidth * dpr);
+      canvasEl.height = Math.floor(window.innerHeight * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resizeCanvas();
@@ -41,8 +42,8 @@ export function GlassAnimation() {
       rotationSpeed: number;
 
       constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+        this.x = Math.random() * canvasEl.width;
+        this.y = Math.random() * canvasEl.height;
         this.size = Math.random() * 4 + 1;
         this.speedX = (Math.random() - 0.5) * 0.5;
         this.speedY = (Math.random() - 0.5) * 0.5;
@@ -57,10 +58,10 @@ export function GlassAnimation() {
         this.angle += this.rotationSpeed;
 
         // Циклическое появление частиц
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.y < 0) this.y = canvas.height;
-        if (this.y > canvas.height) this.y = 0;
+        if (this.x < 0) this.x = canvasEl.width;
+        if (this.x > canvasEl.width) this.x = 0;
+        if (this.y < 0) this.y = canvasEl.height;
+        if (this.y > canvasEl.height) this.y = 0;
 
         // Мерцание
         this.opacity += (Math.random() - 0.5) * 0.02;
@@ -131,10 +132,10 @@ export function GlassAnimation() {
         this.speed = 0.002;
 
         // Создаем путь потока
-        const startY = Math.random() * canvas.height;
+        const startY = Math.random() * canvasEl.height;
         for (let i = 0; i < 5; i++) {
           this.points.push({
-            x: (canvas.width / 4) * i,
+            x: (canvasEl.width / 4) * i,
             y: startY + Math.sin(i) * 100,
           });
         }
@@ -208,15 +209,15 @@ export function GlassAnimation() {
       }
       lastFrameTime = time;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
 
       // Фоновый градиент
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      const gradient = ctx.createLinearGradient(0, 0, canvasEl.width, canvasEl.height);
       gradient.addColorStop(0, '#0a1a2f');
       gradient.addColorStop(0.5, '#1a3a4f');
       gradient.addColorStop(1, '#0a2a3f');
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
 
       // Рисуем потоки стекла
       streams.forEach((stream) => {

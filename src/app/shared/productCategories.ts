@@ -16,6 +16,11 @@ export interface ProductCategory {
   previewImage: string;
 }
 
+export type ProductImageCategory = ProductCategory & {
+  slug: Exclude<ProductCategorySlug, "all">;
+  folder: string;
+};
+
 export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     slug: "all",
@@ -75,7 +80,8 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
 ];
 
 export const PRODUCT_IMAGE_CATEGORIES = PRODUCT_CATEGORIES.filter(
-  (category) => category.slug !== "all" && category.folder,
+  (category): category is ProductImageCategory =>
+    category.slug !== "all" && Boolean(category.folder),
 );
 
 export const getCategoryBySlug = (

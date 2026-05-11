@@ -20,7 +20,7 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl"><img src={icon} alt="Описание изображения" /></span>
+                <span className="text-white font-bold text-xl"><img src={icon} alt="Трайд Сервис" /></span>
               </div>
               <span className="font-bold text-white">{t('footer.boldTitle')}</span>
             </div>
@@ -114,17 +114,17 @@ export function Footer() {
                 {[
                   {
                     label: t('contact.phoneLabels.sales'),
-                    display: "+7 937 418 1818",
+                    display: "+7 937 418 18 18",
                     digits: "79374181818",
                   },
                   {
                     label: t('contact.phoneLabels.production'),
-                    display: "+7 927 288 6191",
+                    display: "+7 927 288 61 91",
                     digits: "79272886191",
                   },
                 {
                   label: t('contact.phoneLabels.delivery'),
-                  display: "+79273643687",
+                  display: "+7 927 364 36 87",
                   digits: "79273643687",
                 },
                 ].map((phone) => (

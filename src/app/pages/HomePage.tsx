@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { Link } from "react-router";
-import { ArrowRight, CheckCircle, Award, Users, Sparkles, Shield } from "lucide-react";
+import { ArrowRight, Users, Sparkles, Shield } from "lucide-react";
 import { GlassAnimation } from "../components/animations/GlassAnimation";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useTranslation } from "react-i18next";
@@ -60,7 +60,7 @@ export function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-5 sm:mb-6"
+            className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-7xl mb-5 sm:mb-6"
           >
               {t('hero.title')}
             <br />
@@ -73,7 +73,7 @@ export function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 sm:mb-12 max-w-3xl mx-auto"
+            className="mx-auto mb-8 max-w-3xl text-lg leading-8 text-slate-100 sm:mb-12 sm:text-xl md:text-2xl"
           >
             
           </motion.p>
@@ -138,10 +138,10 @@ export function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" >
+            <h2 className="section-heading mb-4" >
               {t('features.title')}
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="section-lead">
               {t('features.subtitle')}
             </p>
           </motion.div>
@@ -164,10 +164,10 @@ export function HomePage() {
                 >
                   <feature.icon className="w-7 h-7 text-white" />
                 </motion.div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <h3 className="text-xl font-bold text-slate-950 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <p className="text-sm leading-7 text-slate-600 sm:text-base">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -183,10 +183,10 @@ export function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="section-heading mb-4">
               {t('products.title')}
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600">
+            <p className="section-lead">
               {t('products.subtitle')}
             </p>
           </motion.div>
@@ -214,7 +214,7 @@ export function HomePage() {
                 whileHover={{ y: -10, scale: 1.01 }}
                 className="group cursor-pointer"
               >
-                <div className="relative overflow-hidden rounded-xl shadow-lg mb-4 h-80">
+                <div className="relative overflow-hidden rounded-lg shadow-lg mb-4 h-80">
                   <ImageWithFallback
                     src={category.previewImage}
                     alt={t(category.labelKey, { defaultValue: category.fallbackLabel })}
@@ -222,7 +222,7 @@ export function HomePage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-2xl font-bold text-white mb-2">
+                    <h3 className="text-2xl font-bold leading-tight text-white mb-2">
                       {t(category.labelKey, { defaultValue: category.fallbackLabel })}
                     </h3>
                     <motion.div
@@ -277,10 +277,10 @@ export function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-white mb-6">
               {t('cta.title')}
             </h2>
-            <p className="text-lg sm:text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
+            <p className="mx-auto mb-8 max-w-2xl text-base leading-8 text-slate-100 sm:text-lg">
               {t('cta.description')}
             </p>
             <Link to="/contact">

@@ -142,19 +142,25 @@
   h1 {
     font-size: var(--text-2xl);
     font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    line-height: 1.12;
+    font-family: var(--font-family-accent);
+    letter-spacing: 0;
   }
 
   h2 {
     font-size: var(--text-xl);
     font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    line-height: 1.18;
+    font-family: var(--font-family-accent);
+    letter-spacing: 0;
   }
 
   h3 {
     font-size: var(--text-lg);
     font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    line-height: 1.25;
+    font-family: var(--font-family-accent);
+    letter-spacing: 0;
   }
 
   h4 {
@@ -183,6 +189,9 @@
 
   body {
     font-family: var(--font-family-sans);
+    font-feature-settings: "kern" 1;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
     background-color: #f4f7fb;
     background-image:
       radial-gradient(circle at 12% 12%, rgba(56, 189, 248, 0.11), transparent 28%),
@@ -208,7 +217,7 @@
   }
 
   .surface-card {
-    @apply bg-white/95 border border-white/70 shadow-[0_12px_34px_rgba(15,23,42,0.08)] rounded-2xl;
+    @apply rounded-lg border border-white/70 bg-white/95 shadow-[0_12px_34px_rgba(15,23,42,0.08)];
   }
 
   .surface-card-hover {
@@ -220,27 +229,43 @@
   }
 
   .btn-primary-soft {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r from-sky-600 to-cyan-500 shadow-[0_12px_24px_rgba(2,132,199,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_26px_rgba(2,132,199,0.4)];
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 font-semibold text-white bg-gradient-to-r from-sky-600 to-cyan-500 shadow-[0_12px_24px_rgba(2,132,199,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_26px_rgba(2,132,199,0.4)];
+  }
+
+  .section-heading {
+    @apply text-3xl font-bold leading-tight text-slate-950 sm:text-4xl;
+  }
+
+  .section-lead {
+    @apply mx-auto max-w-2xl text-base leading-7 text-slate-600 sm:text-lg;
+  }
+
+  .page-hero-title {
+    @apply text-3xl font-bold leading-tight text-white sm:text-5xl md:text-6xl;
+  }
+
+  .page-hero-subtitle {
+    @apply mx-auto max-w-[22rem] text-base leading-7 text-sky-100 sm:max-w-3xl sm:text-lg;
   }
 
   .nav-brand-text {
     font-family: var(--font-family-accent);
-    @apply text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-slate-500;
+    @apply text-[0.76rem] font-semibold tracking-normal uppercase text-slate-500;
   }
 
   .nav-link-text {
     font-family: var(--font-family-accent);
-    @apply text-[0.92rem] font-semibold tracking-[0.03em];
+    @apply text-[0.92rem] font-semibold tracking-normal;
   }
 
   .footer-title-text {
     font-family: var(--font-family-accent);
-    @apply text-[0.78rem] font-bold uppercase tracking-[0.14em] text-slate-100;
+    @apply text-[0.8rem] font-bold uppercase tracking-normal text-slate-100;
   }
 
   .footer-link-text {
     font-family: var(--font-family-accent);
-    @apply text-[0.94rem] font-medium tracking-[0.015em];
+    @apply text-[0.94rem] font-medium tracking-normal;
   }
 
   .gradient-animate {
@@ -282,6 +307,10 @@
     padding: 0.75rem 1rem;
     border-radius: 0.85rem;
   }
+
+  .page-hero-title {
+    overflow-wrap: anywhere;
+  }
 }
 
 :root[data-low-perf="true"] .gradient-animate {
@@ -319,4 +348,3 @@
     background-position: 0% 50%;
   }
 }
-
