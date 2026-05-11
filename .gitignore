@@ -1,7 +1,8 @@
 guidelines/
 ATTRIBUTIONS.md
 node_modules/
-# Dependencies
+# Dependenci
+node_modules
 
 # Build outputs
 dist/
